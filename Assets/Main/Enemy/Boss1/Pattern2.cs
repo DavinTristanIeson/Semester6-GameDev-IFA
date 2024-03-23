@@ -14,18 +14,10 @@ public class Boss1Pattern_TrigonometricalSleep : BossPattern<Boss1> {
     blueprint.SetActive(false);
     pool = new GameObjectPool(blueprint, 100) {
       Transform = ResetProjectile,
-      ParentContainer = new GameObject("Boss1: Trigonometrical Sleep")
+      Parent = new GameObject("Boss1: Trigonometrical Sleep")
     };
     cooldown = new CooldownTimer(0.05f);
   }
-  public override void Deactivate(Boss1 caller){
-    pool.Deactivate();
-  }
-
-  public override void Destroy(Boss1 caller){
-    pool.Destroy();
-  }
-
   void Behavior(BaseProjectile caller){
     Vector2 nowPos = caller.RigidBody.position;
     Vector2 velocity = caller.Direction * -5f;
@@ -58,5 +50,7 @@ public class Boss1Pattern_TrigonometricalSleep : BossPattern<Boss1> {
       DifficultyMode.Challenge => 0.15f,
       _ => cooldown.WaitTime
     };
+  }
+  public override void Deactivate(Boss1 caller){
   }
 }

@@ -11,10 +11,10 @@ public enum DifficultyMode {
 
 public abstract class BossPattern<T> : ScriptableBehavior<T> {
   public DifficultyMode Difficulty = DifficultyMode.Normal;
-  abstract public void Deactivate(T caller);
-  abstract public void Destroy(T caller);
+  public virtual void Deactivate(T caller){}
+  public virtual void Destroy(T caller){}
   abstract public void Execute(T caller);
-  abstract public void Start(T caller);
+  public virtual void Start(T caller){}
 }
 
 /// <summary>

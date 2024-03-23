@@ -9,9 +9,9 @@ class Boss1Pattern_TearsOfTheCatdom : BossPattern<Boss1> {
   public Boss1Pattern_TearsOfTheCatdom(){
     blueprint = AssetDatabase.LoadAssetAtPath(Constants.Prefabs.DefaultEnemyProjectile, typeof(GameObject)) as GameObject;
     blueprint.SetActive(false);
-    pool = new GameObjectPool(blueprint, 1000) {
+    pool = new GameObjectPool(blueprint, 30, 60) {
       Transform = ResetProjectile,
-      ParentContainer = new GameObject("Boss1: Tears of the Catdom")
+      Parent = new GameObject("Boss1: Tears of the Catdom"),
     };
     cooldown = new CooldownTimer(0.0005f);
   }
@@ -27,13 +27,13 @@ class Boss1Pattern_TearsOfTheCatdom : BossPattern<Boss1> {
       
       GameObject[] go = pool.GetMany(2);
 
-      Rigidbody2D rb1 = go[0].GetComponent<Rigidbody2D>();
-      rb1.position = boss.RigidBody.position - offset;
+      var projectile = go[0].GetComponent<BaseProjectile>();
+      projectile.RigidBody.position = boss.RigidBody.position - offset;
 
       if (Difficulty == DifficultyMode.Challenge){
-        Rigidbody2D rb2 = go[1].GetComponent<Rigidbody2D>();
-        rb2.position = boss.RigidBody.position + offset;
-        rb2.rotation = (-rb2.rotation) % 360;
+        var projectile2 = go[1].GetComponent<BaseProjectile>();
+        projectile2.RigidBody.position = boss.RigidBody.position + offset;
+        projectile2.RigidBody.rotation = (-projectile2.RigidBody.rotation) % 360;
       }
 
     };
@@ -51,13 +51,7 @@ class Boss1Pattern_TearsOfTheCatdom : BossPattern<Boss1> {
       _ => cooldown.WaitTime
     };
   }
-
   public override void Deactivate(Boss1 caller){
-    pool.Deactivate();
     rotationStep = 0;
-  }
-
-  public override void Destroy(Boss1 caller){
-    pool.Destroy();
   }
 }

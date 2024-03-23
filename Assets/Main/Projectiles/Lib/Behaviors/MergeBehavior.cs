@@ -11,12 +11,6 @@ class MergeBehavior<T> : ScriptableBehavior<T> {
     this.behaviors = behaviors;
   }
 
-  public void Deactivate(T caller){
-    foreach (var behavior in behaviors){
-      behavior.Deactivate(caller);
-    }
-  }
-
   public void Destroy(T caller){
     foreach (var behavior in behaviors){
       behavior.Destroy(caller);

@@ -76,9 +76,4 @@ class PropulsionBehavior : ScriptableBehavior<BaseProjectile> {
       }
     }
   }
-  public void Destroy(BaseProjectile caller){
-
-  }
-  public void Deactivate(BaseProjectile caller){
-  }
 }

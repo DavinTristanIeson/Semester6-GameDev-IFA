@@ -36,7 +36,7 @@ class Boss1Pattern_YawnMissile : BossPattern<Boss1> {
     projectile.RigidBody.position = boss.RigidBody.position;
     var behaviors = new ScriptableBehavior<BaseProjectile>[] {
       new PropulsionBehavior(2f, 0.5f) {
-        Rotation = Random.Range(40, 140),
+        Rotation = Random.Range(0, 360),
         OnFinishPropulsion = GoToPlayer,
       },
       new SpawnerBehavior(SpawnChild, Difficulty switch {
@@ -47,14 +47,6 @@ class Boss1Pattern_YawnMissile : BossPattern<Boss1> {
      }),
     };
     projectile.Behavior = new MergeBehavior<BaseProjectile>(behaviors);
-  }
-
-  public override void Deactivate(Boss1 caller){
-    pool.Deactivate();
-  }
-
-  public override void Destroy(Boss1 caller){
-    pool.Destroy();
   }
 
   public override void Execute(Boss1 caller){
@@ -77,7 +69,7 @@ class Boss1Pattern_YawnMissile : BossPattern<Boss1> {
     blueprint = AssetDatabase.LoadAssetAtPath(Constants.Prefabs.DefaultEnemyProjectile, typeof(GameObject)) as GameObject;
     blueprint.SetActive(false);
     pool = new GameObjectPool(blueprint, 400) {
-      ParentContainer = new GameObject("Boss1: ZZZ"),
+      Parent = new GameObject("Boss1: ZZZ")
     };
     cooldown = new CooldownTimer(2f);
   }

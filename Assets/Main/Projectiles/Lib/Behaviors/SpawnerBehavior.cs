@@ -13,8 +13,6 @@ class SpawnerBehavior : ScriptableBehavior<BaseProjectile> {
     Spawn = spawn;
   }
 
-  public void Start(BaseProjectile caller){
-  }
   public void Execute(BaseProjectile caller){
     if (cooldown.Try()){
       Spawn(caller);
@@ -22,10 +20,5 @@ class SpawnerBehavior : ScriptableBehavior<BaseProjectile> {
     if (Action is ScriptableAction<BaseProjectile> action){
       action(caller);
     }
-  }
-  public void Destroy(BaseProjectile caller){
-
-  }
-  public void Deactivate(BaseProjectile caller){
   }
 }

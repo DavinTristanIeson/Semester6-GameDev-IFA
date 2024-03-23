@@ -57,11 +57,6 @@ public abstract class BaseProjectile : MonoBehaviour {
   }
   void OnDisable(){
     if (Behavior is not null){
-      Behavior.Deactivate(this);
-    }
-  }
-  void OnDestroy(){
-    if (Behavior is not null){
       Behavior.Destroy(this);
     }
   }

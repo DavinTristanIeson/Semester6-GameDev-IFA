@@ -39,7 +39,7 @@ class GameObjectPoolManager : MonoBehaviour {
       pool = new GameObjectPool(blueprint, poolSize);
     }
     if (parentName is string parent && parent.Length > 0){
-      pool.ParentContainer = new GameObject(parent);
+      pool.Parent = new GameObject(parent);
     }
     if (cooldown == null){
       cooldown = new CooldownTimer(cooldownSeconds);
