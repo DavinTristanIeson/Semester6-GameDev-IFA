@@ -35,8 +35,8 @@ public class GunController : MonoBehaviour {
   }
 
   void Update(){
-    if (projectileManager.TryGet() is GameObject go){
-      ResetProjectile(go);
+    if (projectileManager.Try()){
+      ResetProjectile(projectileManager.Get());
     }
   }
 }

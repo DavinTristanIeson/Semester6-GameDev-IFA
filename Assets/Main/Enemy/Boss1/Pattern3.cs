@@ -7,46 +7,46 @@ class Boss1Pattern_YawnMissile : BossPattern<Boss1> {
   private CooldownTimer cooldown;
   private Boss1 boss;
 
-  void GoToPlayer(BaseProjectile projectile){
-    float rotation = projectile.AngleTowards(boss.Player.GetComponent<Rigidbody2D>().position);
-    projectile.RigidBody.rotation = rotation;
-    projectile.Speed = 8f;
+  void GoToPlayer(GameObject caller){
+    var rb = caller.GetComponent<Rigidbody2D>();
+    float rotation = Calculate.Vector.AngleTowards(rb.position, boss.Player.GetComponent<Rigidbody2D>().position);
+    rb.rotation = rotation;
   }
-  void SpawnChild(BaseProjectile source){
+  void SpawnChild(GameObject source){
     var go = pool.GetMany(2);
     for (int i = 0; i < 2; i++){
       ResetChildProjectile(go[i], source);
     }
-    go[1].GetComponent<BaseProjectile>().RigidBody.rotation += 180;
+    go[1].GetComponent<Rigidbody2D>().rotation += 180;
   }
-  void ResetChildProjectile(GameObject go, BaseProjectile self){
+  void ResetChildProjectile(GameObject go, GameObject self){
     go.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-    var projectile = go.GetComponent<BaseProjectile>();
-    projectile.Speed = 3f;
-    projectile.RigidBody.rotation = Mathf.Sin(Time.time) * 360;
-
-    projectile.RigidBody.position = self.RigidBody.position;
-    projectile.Action = null;
-    projectile.Behavior = new PropulsionBehavior(0.0f, 1.5f);
+    var behavior = go.GetComponent<BehaviorManager>();
+    behavior.Behavior = new ProjectileBehavior.Timing(2)  
+      .Chain(0, new ProjectileBehavior.Custom(), 1.5f)
+      .Chain(1, new ProjectileBehavior.Propulsion(3.0f));
+    var rb = go.GetComponent<Rigidbody2D>();
+    rb.position = self.GetComponent<Rigidbody2D>().position;
+    rb.rotation = Mathf.Sin(Time.time) * 360;
   }
   void ResetMainProjectile(GameObject go){
     go.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
-    var projectile = go.GetComponent<BaseProjectile>();
-    projectile.Speed = 1f;
-    projectile.RigidBody.position = boss.RigidBody.position;
-    var behaviors = new ScriptableBehavior<BaseProjectile>[] {
-      new PropulsionBehavior(2f, 0.5f) {
-        Rotation = Random.Range(0, 360),
-        OnFinishPropulsion = GoToPlayer,
-      },
-      new SpawnerBehavior(SpawnChild, Difficulty switch {
+    var behaviors = go.GetComponent<BehaviorManager>();
+    go.GetComponent<Rigidbody2D>().position = boss.rb.position;
+    behaviors.Behavior = new ProjectileBehavior.Merge<GameObject>(new ScriptableBehavior<GameObject>[] {
+      new ProjectileBehavior.Timing(3)
+        .Chain(0, new ProjectileBehavior.Propulsion(3f) {
+          Rotation = Random.Range(0, 360),
+        }, 1f)
+        .Chain(1, new ProjectileBehavior.Custom(GoToPlayer), 0.2f)
+        .Chain(2, new ProjectileBehavior.Propulsion(8f)),
+      new ProjectileBehavior.Spawner(SpawnChild, Difficulty switch {
         DifficultyMode.Casual => 0.1f,
         DifficultyMode.Normal => 0.05f,
         DifficultyMode.Challenge => 0.05f,
         _ => 0.05f,
      }),
-    };
-    projectile.Behavior = new MergeBehavior<BaseProjectile>(behaviors);
+    });
   }
 
   public override void Execute(Boss1 caller){
@@ -65,10 +65,13 @@ class Boss1Pattern_YawnMissile : BossPattern<Boss1> {
     boss = caller;
   }
 
+  public override void Destroy(Boss1 caller){
+    pool.Destroy();
+  }
+
   public Boss1Pattern_YawnMissile(){
     blueprint = AssetDatabase.LoadAssetAtPath(Constants.Prefabs.DefaultEnemyProjectile, typeof(GameObject)) as GameObject;
-    blueprint.SetActive(false);
-    pool = new GameObjectPool(blueprint, 400) {
+    pool = new GameObjectPool(blueprint, 100, 300) {
       Parent = new GameObject("Boss1: ZZZ")
     };
     cooldown = new CooldownTimer(2f);

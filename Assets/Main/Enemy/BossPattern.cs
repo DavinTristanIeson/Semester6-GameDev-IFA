@@ -11,10 +11,10 @@ public enum DifficultyMode {
 
 public abstract class BossPattern<T> : ScriptableBehavior<T> {
   public DifficultyMode Difficulty = DifficultyMode.Normal;
+  public virtual void Start(T caller){}
+  public virtual void Execute(T caller){}
   public virtual void Deactivate(T caller){}
   public virtual void Destroy(T caller){}
-  abstract public void Execute(T caller);
-  public virtual void Start(T caller){}
 }
 
 /// <summary>
@@ -39,6 +39,10 @@ public class BossPatternManager<T> where T : MonoBehaviour {
     this.difficulty = difficulty;
     PatternLength = patternLength;
   }
+
+  BossPattern<T> Pattern {
+    get => patterns[currentPattern];
+  }
   /// <summary>
   /// Changes the pattern when appropriate. After all patterns have been exhausted, the patterns will be reset.
   /// </summary>
@@ -46,7 +50,7 @@ public class BossPatternManager<T> where T : MonoBehaviour {
   public void NextPattern(T caller){
     if (Time.time < lastPatternTime + PatternLength && currentPattern != NO_PATTERN) return;
     if (currentPattern != NO_PATTERN){
-      patterns[currentPattern].Deactivate(caller);
+      Pattern.Deactivate(caller);
     }
     if (currentPattern >= patterns.Length - 1){
       patterns = patterns.OrderBy((x) => Random.Range(0, int.MaxValue)).ToArray();
@@ -55,7 +59,7 @@ public class BossPatternManager<T> where T : MonoBehaviour {
       currentPattern++;
     }
     lastPatternTime = Time.time;
-    patterns[currentPattern].Start(caller);
+    Pattern.Start(caller);
   }
   /// <summary>
   /// Executes the current pattern
@@ -63,13 +67,13 @@ public class BossPatternManager<T> where T : MonoBehaviour {
   /// <param name="caller"></param>
   public void Execute(T caller){
     if (currentPattern != NO_PATTERN){
-      patterns[currentPattern].Execute(caller);
+      Pattern.Execute(caller);
     }
   }
 
   public void Destroy(T caller){
     if (currentPattern != NO_PATTERN){
-      patterns[currentPattern].Destroy(caller);
+      Pattern.Destroy(caller);
     }
   }
 }

@@ -14,7 +14,7 @@ public class Boss1 : MonoBehaviour {
   public GameObject Player {
     get => player;
   }
-  public Rigidbody2D RigidBody {
+  public Rigidbody2D rb {
     get => rigidBody;
   }
 
@@ -27,7 +27,7 @@ public class Boss1 : MonoBehaviour {
     if (patterns == null){
       var basePatterns = new BossPattern<Boss1>[] {
         new Boss1Pattern_TearsOfTheCatdom(),
-        new Boss1Pattern_TrigonometricalSleep(),
+        new Boss1Pattern_SinefulNap(),
         new Boss1Pattern_YawnMissile(),
       };
       patterns = new BossPatternManager<Boss1>(basePatterns, difficultyMode, patternLength: 20);

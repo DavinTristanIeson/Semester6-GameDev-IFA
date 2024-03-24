@@ -1,24 +1,24 @@
 #nullable enable
 
-/// <summary>
-/// Default behavior for projectiles that spawn other game objects every interval or so
-/// </summary>
-class SpawnerBehavior : ScriptableBehavior<BaseProjectile> {
-  public ScriptableAction<BaseProjectile>? Action;
-  public ScriptableAction<BaseProjectile> Spawn;
-  CooldownTimer cooldown;
+using UnityEngine;
 
-  public SpawnerBehavior(ScriptableAction<BaseProjectile> spawn, float spawnInterval = 1f){
-    cooldown = new CooldownTimer(spawnInterval);
-    Spawn = spawn;
-  }
+namespace ProjectileBehavior {
+  /// <summary>
+  /// Default behavior for projectiles that spawn other game objects every interval or so
+  /// </summary>
+  class Spawner : ScriptableBehavior<GameObject> {
+    public ScriptableAction<GameObject> Spawn;
+    CooldownTimer cooldown;
 
-  public void Execute(BaseProjectile caller){
-    if (cooldown.Try()){
-      Spawn(caller);
+    public Spawner(ScriptableAction<GameObject> spawn, float spawnInterval = 1f){
+      cooldown = new CooldownTimer(spawnInterval);
+      Spawn = spawn;
     }
-    if (Action is ScriptableAction<BaseProjectile> action){
-      action(caller);
+
+    public void Execute(GameObject caller){
+      if (cooldown.Try()){
+        Spawn(caller);
+      }
     }
   }
 }

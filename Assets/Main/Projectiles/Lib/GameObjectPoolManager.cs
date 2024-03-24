@@ -26,14 +26,6 @@ class GameObjectPoolManager : MonoBehaviour {
     return cooldown.Try();
   }
 
-  /// <summary>
-  /// Try to get a game object if the pool is not in cooldown. Returns null if it is in cooldown.
-  /// </summary>
-  /// <returns></returns>
-  public GameObject TryGet(){
-    return cooldown.Try() ? pool.Get() : null;
-  }
-
   void OnEnable(){
     if (pool == null){
       pool = new GameObjectPool(blueprint, poolSize);
