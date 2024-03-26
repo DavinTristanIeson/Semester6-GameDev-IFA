@@ -33,7 +33,7 @@ class Boss1Pattern_YawnMissile : BossPattern<Boss1> {
     go.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
     var behaviors = go.GetComponent<BehaviorManager>();
     go.GetComponent<Rigidbody2D>().position = boss.rb.position;
-    behaviors.Behavior = new ProjectileBehavior.Merge<GameObject>(new ScriptableBehavior<GameObject>[] {
+    behaviors.Behavior = new ProjectileBehavior.Merge(new ScriptableBehavior<GameObject>[] {
       new ProjectileBehavior.Timing(3)
         .Chain(0, new ProjectileBehavior.Propulsion(3f) {
           Rotation = Random.Range(0, 360),

@@ -8,3 +8,7 @@ public interface ScriptableBehavior<T> {
   public void Deactivate(T caller){}
   public void Destroy(T caller){}
 }
+
+interface IGetBehavior {
+  public T? GetBehaviorOfType<T>() where T : class?;
+}

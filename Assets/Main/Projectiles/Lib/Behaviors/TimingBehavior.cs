@@ -1,5 +1,7 @@
 using UnityEngine;
 
+#nullable enable
+
 namespace ProjectileBehavior {
   class TimingAgent {
     public ScriptableBehavior<GameObject> Behavior;
@@ -10,7 +12,7 @@ namespace ProjectileBehavior {
     }
   }
 
-  class Timing : ScriptableBehavior<GameObject> {
+  class Timing : ScriptableBehavior<GameObject>, IGetBehavior {
     TimingAgent[] behaviors;
     int behaviorIndex = 0;
     float spawnTime = 0;
@@ -82,6 +84,16 @@ namespace ProjectileBehavior {
       foreach (var behavior in behaviors){
         behavior.Behavior.Destroy(caller);
       }
+    }
+
+    public T? GetBehaviorOfType<T>() where T : class? {
+      if (currentBehavior is T behavior){
+        return behavior;
+      }
+      if (currentBehavior is IGetBehavior getter){
+        return getter.GetBehaviorOfType<T>();
+      }
+      return null;
     }
   }
 }
