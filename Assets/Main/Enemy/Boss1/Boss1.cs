@@ -26,10 +26,11 @@ public class Boss1 : MonoBehaviour {
     health.Reset();
     if (patterns == null){
       var basePatterns = new BossPattern<Boss1>[] {
-        // new Boss1Pattern_TearsOfTheCatdom(),
-        // new Boss1Pattern_SinefulNap(),
-        // new Boss1Pattern_YawnMissile(),
+        new Boss1Pattern_TearsOfTheCatdom(),
+        new Boss1Pattern_SinefulNap(),
+        new Boss1Pattern_YawnMissile(),
         new Boss1Pattern_FadingYawnToTheSunrise(),
+        new Boss1Pattern_StormTroopersTearDucts(),
       };
       patterns = new BossPatternManager<Boss1>(basePatterns, difficultyMode, patternLength: 20);
     }

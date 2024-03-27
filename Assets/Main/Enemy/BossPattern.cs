@@ -36,6 +36,8 @@ public class BossPatternManager<T> where T : MonoBehaviour {
     foreach (var pattern in patterns){
       pattern.Difficulty = difficulty;
     }
+    this.patterns = this.patterns.OrderBy((x) => Random.Range(0, int.MaxValue)).ToArray();
+
     this.difficulty = difficulty;
     PatternLength = patternLength;
   }
