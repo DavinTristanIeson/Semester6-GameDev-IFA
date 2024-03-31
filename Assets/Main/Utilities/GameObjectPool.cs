@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -10,6 +12,7 @@ public class GameObjectPool {
   public ScriptableAction<GameObject>? Transform;
 
   private ObjectPool<GameObject> pool;
+  private HashSet<GameObject> outgoing;
   public GameObject? Parent;
   
 
@@ -28,12 +31,15 @@ public class GameObjectPool {
       tf(obj);
     }
     obj.SetActive(true);
+    outgoing.Add(obj);
   }
   void OnRelease(GameObject obj){
     obj.SetActive(false);
+    outgoing.Remove(obj);
   }
   void OnDestroy(GameObject obj){
     GameObject.Destroy(obj);
+    outgoing.Remove(obj);
   }
 
   public GameObjectPool(GameObject blueprint, int size){
@@ -45,8 +51,10 @@ public class GameObjectPool {
       actionOnRelease: OnRelease,
       actionOnDestroy: OnDestroy,
       defaultCapacity: size,
-      maxSize: size
+      maxSize: size,
+      collectionCheck: false
     );
+    outgoing = new HashSet<GameObject>();
   }
 
   public GameObjectPool(
@@ -61,11 +69,14 @@ public class GameObjectPool {
       actionOnRelease: OnRelease,
       actionOnDestroy: OnDestroy,
       defaultCapacity: poolMin,
-      maxSize: poolMax
+      maxSize: poolMax,
+      collectionCheck: false
     );
+    outgoing = new HashSet<GameObject>();
   }
   ~GameObjectPool(){
     pool.Dispose();
+    outgoing.Clear();
   }
 
   public GameObject Get(){
@@ -80,6 +91,12 @@ public class GameObjectPool {
   }
   public void Release(GameObject obj){
     pool.Release(obj);
+  }
+
+  public void Revoke(){
+    foreach (GameObject go in outgoing.ToArray()){
+      Release(go);
+    }
   }
 
   public void Destroy(){

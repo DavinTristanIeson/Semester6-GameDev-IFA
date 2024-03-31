@@ -13,11 +13,12 @@ class Boss1Pattern_YawnMissile : BossPattern<Boss1> {
     rb.rotation = rotation;
   }
   void SpawnChild(GameObject source){
-    var go = pool.GetMany(2);
-    for (int i = 0; i < 2; i++){
-      ResetChildProjectile(go[i], source);
+    var go = pool.GetMany(Difficulty == DifficultyMode.Challenge ? 2 : 1);
+    ResetChildProjectile(go[0], source);
+    if (Difficulty == DifficultyMode.Challenge){
+      ResetChildProjectile(go[1], source);
+      go[1].GetComponent<Rigidbody2D>().rotation += 180;
     }
-    go[1].GetComponent<Rigidbody2D>().rotation += 180;
   }
   void ResetChildProjectile(GameObject go, GameObject self){
     go.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
@@ -67,6 +68,10 @@ class Boss1Pattern_YawnMissile : BossPattern<Boss1> {
 
   public override void Destroy(Boss1 caller){
     pool.Destroy();
+  }
+
+  public override void Deactivate(Boss1 caller){
+    pool.Revoke();
   }
 
   public Boss1Pattern_YawnMissile(){

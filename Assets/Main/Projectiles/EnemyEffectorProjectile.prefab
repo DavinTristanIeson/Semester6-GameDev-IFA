@@ -12,10 +12,11 @@ GameObject:
   - component: {fileID: 8094054379110738634}
   - component: {fileID: 8562967783665282246}
   - component: {fileID: 6699764555055873121}
-  - component: {fileID: 4260533195613080180}
   - component: {fileID: 806253197659093317}
+  - component: {fileID: -8608650244923441383}
+  - component: {fileID: 4464042084701173158}
   m_Layer: 8
-  m_Name: EnemyProjectile
+  m_Name: EnemyEffectorProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -150,18 +151,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4260533195613080180
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8919668640493869197}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c648edf9a10e644c8dbc5a945e32f59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &806253197659093317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,5 +161,29 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 79324e833b363ab409119f95e730f6f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-8608650244923441383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8919668640493869197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95f809d9adad9844886c2065a247880c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4464042084701173158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8919668640493869197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c7f8020cb56610419db89fe34ebf38e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

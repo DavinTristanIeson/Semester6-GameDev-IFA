@@ -20,7 +20,7 @@ class Boss1Pattern_TearsOfTheCatdom : BossPattern<Boss1> {
     if (cooldown.Try()){
       Vector2 offset = Difficulty == DifficultyMode.Challenge ? Calculate.Vector.WithAngle(rotation) * 0.7f : Vector2.zero;
       
-      GameObject[] go = pool.GetMany(2);
+      GameObject[] go = pool.GetMany(Difficulty == DifficultyMode.Challenge ? 2 : 1);
 
       var rb = go[0].GetComponent<Rigidbody2D>();
       rb.position = boss.rb.position - offset;
@@ -47,6 +47,7 @@ class Boss1Pattern_TearsOfTheCatdom : BossPattern<Boss1> {
   }
   public override void Deactivate(Boss1 caller){
     rotationStep = 0;
+    pool.Revoke();
   }
   public override void Destroy(Boss1 caller){
     pool.Destroy();

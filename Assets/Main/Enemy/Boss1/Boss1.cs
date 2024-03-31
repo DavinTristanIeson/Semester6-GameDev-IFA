@@ -31,6 +31,7 @@ public class Boss1 : MonoBehaviour {
         new Boss1Pattern_YawnMissile(),
         new Boss1Pattern_FadingYawnToTheSunrise(),
         new Boss1Pattern_StormTroopersTearDucts(),
+        new Boss1Pattern_TearsGeyser(),
       };
       patterns = new BossPatternManager<Boss1>(basePatterns, difficultyMode, patternLength: 20);
     }

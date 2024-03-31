@@ -6,21 +6,6 @@ class Boss1Pattern_FadingYawnToTheSunrise : BossPattern<Boss1> {
   CooldownTimer cooldown;
   private Boss1 boss;
 
-  void ChangeChildProjectileRotation(GameObject go){
-    var rb = go.GetComponent<Rigidbody2D>();
-    rb.rotation += 90;
-  }
-  void ChildProjectileCurvedPropulsion(GameObject go){
-    var rb = go.GetComponent<Rigidbody2D>();
-    float multipler = Difficulty switch {
-      DifficultyMode.Casual => 0f,
-      DifficultyMode.Normal => 0.5f,
-      DifficultyMode.Challenge => 1f,
-      _ => 0.5f,
-    };
-    rb.rotation += (Mathf.Sin(Time.time) - 0.5f) * multipler;
-  }
-
   void SpawnChildProjectile(GameObject go){
     int projectileCount = 4 + (int) Difficulty * 2;
     var parentRb = go.GetComponent<Rigidbody2D>();
@@ -38,12 +23,8 @@ class Boss1Pattern_FadingYawnToTheSunrise : BossPattern<Boss1> {
 
       projectile.GetComponent<BehaviorManager>().Behavior = new ProjectileBehavior.Timing(3)
         .Chain(0, new ProjectileBehavior.Propulsion(5f), go.transform.localScale.x / 10f)
-        .Chain(1, new ProjectileBehavior.Custom(ChangeChildProjectileRotation), 2.5f)
-        .Chain(2, Difficulty == DifficultyMode.Challenge 
-            ? new ProjectileBehavior.Merge(2)
-              .Set(0, new ProjectileBehavior.Custom(ChildProjectileCurvedPropulsion))
-              .Set(1, new ProjectileBehavior.Propulsion(7f))
-            : new ProjectileBehavior.Propulsion(5f)
+        .Chain(1, new ProjectileBehavior.Custom(), 2.5f)
+        .Chain(2, new ProjectileBehavior.Propulsion(Difficulty == DifficultyMode.Challenge ? 7f : 5f)
         );
     }
 
@@ -83,6 +64,10 @@ class Boss1Pattern_FadingYawnToTheSunrise : BossPattern<Boss1> {
 
   public override void Destroy(Boss1 caller){
     pool.Destroy();
+  }
+
+  public override void Deactivate(Boss1 caller){
+    pool.Revoke();
   }
 
   public Boss1Pattern_FadingYawnToTheSunrise(){

@@ -56,4 +56,7 @@ public class Boss1Pattern_SinefulNap : BossPattern<Boss1> {
   public override void Destroy(Boss1 caller){
     pool.Destroy();
   }
+  public override void Deactivate(Boss1 caller){
+    pool.Revoke();
+  }
 }

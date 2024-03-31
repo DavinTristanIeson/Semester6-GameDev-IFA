@@ -34,4 +34,8 @@ public class CooldownTimer {
     lastValid = Time.time;
     return true;
   }
+
+  public void Reset(){
+    lastValid = Time.time;
+  }
 }

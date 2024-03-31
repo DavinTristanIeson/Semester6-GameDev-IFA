@@ -60,6 +60,10 @@ class Boss1Pattern_StormTroopersTearDucts : BossPattern<Boss1>{
     pool.Destroy();
   }
 
+  public override void Deactivate(Boss1 caller){
+    pool.Revoke();
+  }
+
   public Boss1Pattern_StormTroopersTearDucts(){
     var blueprint = AssetDatabase.LoadAssetAtPath(Constants.Prefabs.DefaultEnemyProjectile, typeof(GameObject)) as GameObject;
     pool = new GameObjectPool(blueprint, 300, 1000) {

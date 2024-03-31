@@ -14,6 +14,7 @@ namespace Constants {
   }
   public sealed class Prefabs {
     public const string DefaultEnemyProjectile = "Assets/Main/Projectiles/EnemyProjectile.prefab";
+    public const string EnemyEffectorProjectile = "Assets/Main/Projectiles/EnemyEffectorProjectile.prefab";
   }
   public sealed class Tags {
     public const string Hurtbox = "Hurtbox";

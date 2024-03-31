@@ -3,7 +3,7 @@ using UnityEngine;
 #nullable enable
 
 [RequireComponent(typeof(Rigidbody2D))]
-public abstract class BaseProjectile : MonoBehaviour {
+public class BaseProjectile : MonoBehaviour {
   public Rigidbody2D rb {
     get => GetComponent<Rigidbody2D>();
   }
