@@ -9,6 +9,7 @@ public class Boss1 : MonoBehaviour {
   private HealthManager health;
   private Rigidbody2D rigidBody;
   private GameObject player;
+  public HealthBar healtBar;
 
 
   public GameObject Player {
@@ -24,6 +25,7 @@ public class Boss1 : MonoBehaviour {
     health = GetComponent<HealthManager>();
     player = GameObject.FindWithTag(Constants.Tags.Player);
     health.Reset();
+    healtBar.SetMaxHealth(health.OriginalHealth);
     if (patterns == null){
       var basePatterns = new BossPattern<Boss1>[] {
         new Boss1Pattern_TearsOfTheCatdom(),
@@ -51,6 +53,7 @@ public class Boss1 : MonoBehaviour {
     if (collider.gameObject.layer == Constants.Layers.PlayerProjectiles){
       if (health.Damage(1)){
         Debug.Log($"Boss HP: {health.Health}");
+        healtBar.SetHealth(health.Health);
       }
     }
   }
