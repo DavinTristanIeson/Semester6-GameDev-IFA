@@ -21,6 +21,10 @@ class HealthManager : MonoBehaviour {
     }
   }
 
+  public int OriginalHealth {
+    get => originalHealth;
+  }
+
   public int HealthPercentage {
     get => health / originalHealth;
   }
