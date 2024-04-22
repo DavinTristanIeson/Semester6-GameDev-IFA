@@ -1,7 +1,8 @@
 using System;
 using UnityEditor;
 using UnityEngine;
-public class Boss1Pattern_SinefulNap : BossPattern<Boss1> {
+public class Boss1Pattern2_SineWave : BossPattern<Boss1> {
+  Boss1 boss;
   private GameObjectPool pool;
   private GameObject blueprint;
   private CooldownTimer cooldown;
@@ -18,11 +19,12 @@ public class Boss1Pattern_SinefulNap : BossPattern<Boss1> {
     go.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
     blueprint.GetComponent<BehaviorManager>().Behavior = new ProjectileBehavior.Custom(Behavior);
   }
-  public Boss1Pattern_SinefulNap(){
-    blueprint = AssetDatabase.LoadAssetAtPath(Constants.Prefabs.DefaultEnemyProjectile, typeof(GameObject)) as GameObject;
+  public Boss1Pattern2_SineWave(Boss1 boss){
+    this.boss = boss;
+    blueprint = boss.Projectiles.Get(ProjectileType.Regular);
     pool = new GameObjectPool(blueprint, 20, 100) {
       Transform = ResetProjectile,
-      Parent = new GameObject("Boss1: Trigonometrical Sleep")
+      Parent = ProjectileLibrary.CreateContainer("Boss1 Pattern2 SineWave")
     };
     cooldown = new CooldownTimer(0.05f);
   }

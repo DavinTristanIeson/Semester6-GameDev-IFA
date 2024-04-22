@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-class Boss1Pattern_YawnMissile : BossPattern<Boss1> {
+class Boss1Pattern3_Missile : BossPattern<Boss1> {
   private GameObjectPool pool;
   private GameObject blueprint;
   private CooldownTimer cooldown;
@@ -33,7 +33,7 @@ class Boss1Pattern_YawnMissile : BossPattern<Boss1> {
   void ResetMainProjectile(GameObject go){
     go.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
     var behaviors = go.GetComponent<BehaviorManager>();
-    go.GetComponent<Rigidbody2D>().position = boss.rb.position;
+    go.GetComponent<Rigidbody2D>().position = boss.mouthPosition;
     behaviors.Behavior = new ProjectileBehavior.Merge(new ScriptableBehavior<GameObject>[] {
       new ProjectileBehavior.Timing(3)
         .Chain(0, new ProjectileBehavior.Propulsion(3f) {
@@ -63,7 +63,6 @@ class Boss1Pattern_YawnMissile : BossPattern<Boss1> {
       DifficultyMode.Challenge => 3f,
       _ => 3f,
     };
-    boss = caller;
   }
 
   public override void Destroy(Boss1 caller){
@@ -74,10 +73,11 @@ class Boss1Pattern_YawnMissile : BossPattern<Boss1> {
     pool.Revoke();
   }
 
-  public Boss1Pattern_YawnMissile(){
-    blueprint = AssetDatabase.LoadAssetAtPath(Constants.Prefabs.DefaultEnemyProjectile, typeof(GameObject)) as GameObject;
+  public Boss1Pattern3_Missile(Boss1 boss){
+    this.boss = boss;
+    blueprint = boss.Projectiles.Get(ProjectileType.Regular);
     pool = new GameObjectPool(blueprint, 100, 300) {
-      Parent = new GameObject("Boss1: ZZZ")
+      Parent = ProjectileLibrary.CreateContainer("Boss1 Pattern3 Missile")
     };
     cooldown = new CooldownTimer(2f);
   }

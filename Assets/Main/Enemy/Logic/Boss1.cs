@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof (Rigidbody2D))]
@@ -6,10 +7,12 @@ public class Boss1 : MonoBehaviour {
   public DifficultyMode difficultyMode = DifficultyMode.Normal;
 
   private BossPatternManager<Boss1> patterns;
+  [NonSerialized]
+  public ProjectileLibrary Projectiles;
   private HealthManager health;
   private Rigidbody2D rigidBody;
   private GameObject player;
-  public HealthBar healtBar;
+  public HealthBar healthBar;
 
 
   public GameObject Player {
@@ -18,22 +21,29 @@ public class Boss1 : MonoBehaviour {
   public Rigidbody2D rb {
     get => rigidBody;
   }
+  public Vector2 eyesPosition {
+    get => new Vector2(rb.position.x - 0.15f, rb.position.y + 0.8f);
+  }
+  public Vector2 mouthPosition {
+    get => new Vector2(rb.position.x - 0.15f, rb.position.y + 0.6f);
+  }
 
 
   void OnEnable(){
     rigidBody = GetComponent<Rigidbody2D>();
+    Projectiles = GameObject.Find(Constants.GameObjectNames.ProjectileLibrary).GetComponent<ProjectileLibrary>();
     health = GetComponent<HealthManager>();
     player = GameObject.FindWithTag(Constants.Tags.Player);
     health.Reset();
-    healtBar.SetMaxHealth(health.OriginalHealth);
+    healthBar.SetMaxHealth(health.OriginalHealth);
     if (patterns == null){
       var basePatterns = new BossPattern<Boss1>[] {
-        new Boss1Pattern_TearsOfTheCatdom(),
-        new Boss1Pattern_SinefulNap(),
-        new Boss1Pattern_YawnMissile(),
-        new Boss1Pattern_FadingYawnToTheSunrise(),
-        new Boss1Pattern_StormTroopersTearDucts(),
-        new Boss1Pattern_TearsGeyser(),
+        new Boss1Pattern1_BOWAP(this),
+        new Boss1Pattern2_SineWave(this),
+        new Boss1Pattern3_Missile(this),
+        new Boss1Pattern4_SpawnRing(this),
+        new Boss1Pattern5_Tunnel(this),
+        new Boss1Pattern6_Geyser(this),
       };
       patterns = new BossPatternManager<Boss1>(basePatterns, difficultyMode, patternLength: 20);
     }
@@ -54,7 +64,7 @@ public class Boss1 : MonoBehaviour {
     if (collider.gameObject.layer == Constants.Layers.PlayerProjectiles){
       if (health.Damage(1)){
         Debug.Log($"Boss HP: {health.Health}");
-        healtBar.SetHealth(health.Health);
+        healthBar.SetHealth(health.Health);
       }
     }
   }

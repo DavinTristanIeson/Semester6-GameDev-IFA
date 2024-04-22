@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-class Boss1Pattern_FadingYawnToTheSunrise : BossPattern<Boss1> {
+class Boss1Pattern4_SpawnRing : BossPattern<Boss1> {
   GameObjectPool pool;
   CooldownTimer cooldown;
   private Boss1 boss;
@@ -34,8 +34,8 @@ class Boss1Pattern_FadingYawnToTheSunrise : BossPattern<Boss1> {
   }
 
   void ResetMainProjectile(GameObject go){
-    go.GetComponent<Rigidbody2D>().position = boss.rb.position;
-    float size = 4f + (int) Difficulty * 3f;
+    go.GetComponent<Rigidbody2D>().position = boss.mouthPosition;
+    float size = 8f;
     go.transform.localScale = new Vector3(size, size, size);
     go.GetComponent<BehaviorManager>().Behavior = new ProjectileBehavior.Merge(
       new ScriptableBehavior<GameObject>[] {
@@ -59,7 +59,6 @@ class Boss1Pattern_FadingYawnToTheSunrise : BossPattern<Boss1> {
       DifficultyMode.Challenge => 3f,
       _ => 3f,
     };
-    boss = caller;
   }
 
   public override void Destroy(Boss1 caller){
@@ -70,10 +69,11 @@ class Boss1Pattern_FadingYawnToTheSunrise : BossPattern<Boss1> {
     pool.Revoke();
   }
 
-  public Boss1Pattern_FadingYawnToTheSunrise(){
-    var blueprint = AssetDatabase.LoadAssetAtPath(Constants.Prefabs.DefaultEnemyProjectile, typeof(GameObject)) as GameObject;
+  public Boss1Pattern4_SpawnRing(Boss1 boss){
+    this.boss = boss;
+    var blueprint = boss.Projectiles.Get(ProjectileType.Regular);
     pool = new GameObjectPool(blueprint, 200, 400) {
-      Parent = new GameObject("Boss1: Fading Yawn to the Sunrise")
+      Parent = ProjectileLibrary.CreateContainer("Boss1 Pattern4 SpawnRing")
     };
     cooldown = new CooldownTimer(3f);
   }

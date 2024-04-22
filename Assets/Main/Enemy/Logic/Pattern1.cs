@@ -1,15 +1,17 @@
 using UnityEditor;
 using UnityEngine;
-class Boss1Pattern_TearsOfTheCatdom : BossPattern<Boss1> {
+class Boss1Pattern1_BOWAP : BossPattern<Boss1> {
+  Boss1 boss;
   float rotationStep = 1;
   int rotation = 0;
   private GameObjectPool pool;
   private CooldownTimer cooldown;
-  public Boss1Pattern_TearsOfTheCatdom(){
-    var blueprint = AssetDatabase.LoadAssetAtPath(Constants.Prefabs.DefaultEnemyProjectile, typeof(GameObject)) as GameObject;
+  public Boss1Pattern1_BOWAP(Boss1 boss){
+    this.boss = boss;
+    var blueprint = boss.Projectiles.Get(ProjectileType.Tear);
     pool = new GameObjectPool(blueprint, 300, 1000) {
       Transform = ResetProjectile,
-      Parent = new GameObject("Boss1: Tears of the Catdom"),
+      Parent = ProjectileLibrary.CreateContainer("Boss1 Pattern1 BOWAP"),
     };
     cooldown = new CooldownTimer(0.001f);
   }
@@ -23,11 +25,11 @@ class Boss1Pattern_TearsOfTheCatdom : BossPattern<Boss1> {
       GameObject[] go = pool.GetMany(Difficulty == DifficultyMode.Challenge ? 2 : 1);
 
       var rb = go[0].GetComponent<Rigidbody2D>();
-      rb.position = boss.rb.position - offset;
+      rb.position = boss.eyesPosition - offset;
 
       if (Difficulty == DifficultyMode.Challenge){
         var rb2 = go[1].GetComponent<Rigidbody2D>();
-        rb2.position = boss.rb.position + offset;
+        rb2.position = boss.eyesPosition + offset;
         rb2.rotation = (-rb2.rotation) % 360;
       }
     };

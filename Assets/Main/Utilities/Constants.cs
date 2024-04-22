@@ -20,4 +20,7 @@ namespace Constants {
     public const string Hurtbox = "Hurtbox";
     public const string Player = "Player";
   }
+  public sealed class GameObjectNames {
+    public const string ProjectileLibrary = "ProjectileLibrary";
+  }
 }

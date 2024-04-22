@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-class Boss1Pattern_StormTroopersTearDucts : BossPattern<Boss1>{
+class Boss1Pattern5_Tunnel : BossPattern<Boss1>{
   GameObjectPool pool;
   CooldownTimer barrierCooldown;
   CooldownTimer homingCooldown;
@@ -21,16 +21,16 @@ class Boss1Pattern_StormTroopersTearDucts : BossPattern<Boss1>{
   public override void Execute(Boss1 caller){
     if (barrierCooldown.Try()){
       var go = pool.Get();
-      go.GetComponent<Rigidbody2D>().position = boss.rb.position;
+      go.GetComponent<Rigidbody2D>().position = boss.eyesPosition;
       go.GetComponent<BehaviorManager>().Behavior = new ProjectileBehavior.Propulsion(2f, GetBarrierAngle());
 
       var sideBarrier = pool.Get();
-      sideBarrier.GetComponent<Rigidbody2D>().position = boss.rb.position;
+      sideBarrier.GetComponent<Rigidbody2D>().position = boss.eyesPosition;
       sideBarrier.GetComponent<BehaviorManager>().Behavior = new ProjectileBehavior.Propulsion(10f, Random.Range(0, 2) == 0 ? 90 : 270);
     };
     if (homingCooldown.Try()){
       var go = pool.Get();
-      go.GetComponent<Rigidbody2D>().position = boss.rb.position;
+      go.GetComponent<Rigidbody2D>().position = boss.eyesPosition;
       go.GetComponent<BehaviorManager>().Behavior = new ProjectileBehavior.Propulsion(Difficulty switch {
         DifficultyMode.Casual => 5f,
         DifficultyMode.Normal => 5f,
@@ -40,13 +40,12 @@ class Boss1Pattern_StormTroopersTearDucts : BossPattern<Boss1>{
     }
     if (Difficulty == DifficultyMode.Challenge && homingCooldown2.Try()){
       var go = pool.Get();
-      go.GetComponent<Rigidbody2D>().position = boss.rb.position;
+      go.GetComponent<Rigidbody2D>().position = boss.eyesPosition;
       go.GetComponent<BehaviorManager>().Behavior = new ProjectileBehavior.Propulsion(8f, GetHomingAngle() + Random.Range(-2f, 2f));
     }
   }
 
   public override void Start(Boss1 caller){
-    boss = caller;
     homingCooldown.WaitTime = Difficulty switch {
       DifficultyMode.Casual => 0.8f,
       DifficultyMode.Normal => 0.5f,
@@ -64,10 +63,11 @@ class Boss1Pattern_StormTroopersTearDucts : BossPattern<Boss1>{
     pool.Revoke();
   }
 
-  public Boss1Pattern_StormTroopersTearDucts(){
-    var blueprint = AssetDatabase.LoadAssetAtPath(Constants.Prefabs.DefaultEnemyProjectile, typeof(GameObject)) as GameObject;
+  public Boss1Pattern5_Tunnel(Boss1 boss){
+    this.boss = boss;
+    var blueprint = boss.Projectiles.Get(ProjectileType.Tear);
     pool = new GameObjectPool(blueprint, 300, 1000) {
-      Parent = new GameObject("Boss1: Storm Troopers Tear Ducts"),
+      Parent = ProjectileLibrary.CreateContainer("Boss1 Pattern5 Tunnel"),
     };
     barrierCooldown = new CooldownTimer(0.01f);
     homingCooldown = new CooldownTimer(0.5f);
