@@ -44,6 +44,7 @@ public class Boss1 : MonoBehaviour {
         new Boss1Pattern4_SpawnRing(this),
         new Boss1Pattern5_Tunnel(this),
         new Boss1Pattern6_Geyser(this),
+        new Boss1Pattern7_Punch(this),
       };
       patterns = new BossPatternManager<Boss1>(basePatterns, difficultyMode, patternLength: 20);
     }

@@ -3546,6 +3546,10 @@ PrefabInstance:
       propertyPath: healthBar
       value: 
       objectReference: {fileID: 1053459935}
+    - target: {fileID: 2433146928738662145, guid: d5aeab9628ac6e840961242639f578a3, type: 3}
+      propertyPath: difficultyMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2579510131350798972, guid: d5aeab9628ac6e840961242639f578a3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 6.9699993
