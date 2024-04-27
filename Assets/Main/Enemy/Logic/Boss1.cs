@@ -28,8 +28,11 @@ public class Boss1 : MonoBehaviour {
     get => new Vector2(rb.position.x - 0.15f, rb.position.y + 0.6f);
   }
 
-
   void OnEnable(){
+    var ss = SessionStorage.GetInstance();
+    if (ss.Has(SessionStorage.Keys.GameDifficulty)){
+      difficultyMode = ss.Get<DifficultyMode>(SessionStorage.Keys.GameDifficulty);
+    }
     rigidBody = GetComponent<Rigidbody2D>();
     Projectiles = GameObject.Find(Constants.GameObjectNames.ProjectileLibrary).GetComponent<ProjectileLibrary>();
     health = GetComponent<HealthManager>();
