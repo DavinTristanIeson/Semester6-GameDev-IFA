@@ -30,29 +30,27 @@ class Boss1Pattern3_Missile : BossPattern<Boss1> {
     rb.position = self.GetComponent<Rigidbody2D>().position;
     rb.rotation = Mathf.Sin(Time.time) * 360;
   }
-  void ResetMainProjectile(GameObject go){
-    go.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
-    var behaviors = go.GetComponent<BehaviorManager>();
-    go.GetComponent<Rigidbody2D>().position = boss.mouthPosition;
-    behaviors.Behavior = new ProjectileBehavior.Merge(new ScriptableBehavior<GameObject>[] {
-      new ProjectileBehavior.Timing(3)
-        .Chain(0, new ProjectileBehavior.Propulsion(3f) {
-          Rotation = Random.Range(0, 360),
-        }, 1f)
-        .Chain(1, new ProjectileBehavior.Custom(GoToPlayer), 0.2f)
-        .Chain(2, new ProjectileBehavior.Propulsion(8f)),
-      new ProjectileBehavior.Spawner(SpawnChild, Difficulty switch {
-        DifficultyMode.Casual => 0.1f,
-        DifficultyMode.Normal => 0.05f,
-        DifficultyMode.Challenge => 0.05f,
-        _ => 0.05f,
-     }),
-    });
-  }
 
   public override void Execute(Boss1 caller){
     if (cooldown.Try()){
-      ResetMainProjectile(pool.Get());
+      var go = pool.Get();
+      go.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
+      var behaviors = go.GetComponent<BehaviorManager>();
+      go.GetComponent<Rigidbody2D>().position = boss.mouthPosition;
+      behaviors.Behavior = new ProjectileBehavior.Merge(new ScriptableBehavior<GameObject>[] {
+          new ProjectileBehavior.Timing(3)
+            .Chain(0, new ProjectileBehavior.Propulsion(3f) {
+              Rotation = Random.Range(0, 360),
+            }, 1f)
+            .Chain(1, new ProjectileBehavior.Custom(GoToPlayer), 0.2f)
+            .Chain(2, new ProjectileBehavior.Propulsion(8f)),
+          new ProjectileBehavior.Spawner(SpawnChild, Difficulty switch {
+            DifficultyMode.Casual => 0.1f,
+            DifficultyMode.Normal => 0.05f,
+            DifficultyMode.Challenge => 0.05f,
+            _ => 0.05f,
+        }),
+      });
     }    
   }
 

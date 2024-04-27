@@ -28,26 +28,6 @@ class Boss1Pattern6_Geyser : BossPattern<Boss1>{
     go.transform.localScale = new Vector3(value, value, 0.0f);
   }
 
-  void ResetGeyserProjectile(GameObject go){
-    var target = boss.Player.GetComponent<Rigidbody2D>().position;
-    var angle = Calculate.Vector.AngleTowards(boss.rb.position, target);
-    go.GetComponent<BehaviorManager>().Behavior = new ProjectileBehavior.Merge(2)
-      .Set(0, new ProjectileBehavior.Propulsion(4f, angle))
-      .Set(1, new ProjectileBehavior.Acceleration(1f, 0.1f, 1f, Difficulty switch {
-        DifficultyMode.Casual => 10f,
-        DifficultyMode.Normal => 20f,
-        DifficultyMode.Challenge => 15f,
-        _ => 15f
-      }) {
-        Accelerate = Enlarge
-      });
-    var triggers = go.GetComponent<Trigger2DListener>();
-    triggers.StayListener += AccelerateTears;
-    if (Difficulty == DifficultyMode.Challenge){
-      triggers.ExitListener += BounceTears;
-    }
-  }
-
   public override void Execute(Boss1 caller){
     if (tearsCooldown.Try()){
       int projectileCount = 1 << (int)Difficulty;
@@ -62,6 +42,24 @@ class Boss1Pattern6_Geyser : BossPattern<Boss1>{
     }
     if (geyserCooldown.Try()){
       var go = geyserPool.Get();
+      var target = boss.Player.GetComponent<Rigidbody2D>().position;
+      var angle = Calculate.Vector.AngleTowards(boss.rb.position, target);
+      go.GetComponent<BehaviorManager>().Behavior = new ProjectileBehavior.Merge(2)
+        .Set(0, new ProjectileBehavior.Propulsion(4f, angle))
+        .Set(1, new ProjectileBehavior.Acceleration(1f, 0.1f, 1f, Difficulty switch {
+          DifficultyMode.Casual => 10f,
+          DifficultyMode.Normal => 20f,
+          DifficultyMode.Challenge => 15f,
+          _ => 15f
+        }) {
+          Accelerate = Enlarge
+        });
+      var triggers = go.GetComponent<Trigger2DListener>();
+      triggers.StayListener += AccelerateTears;
+      if (Difficulty == DifficultyMode.Challenge){
+        triggers.ExitListener += BounceTears;
+      }
+      
       var rb = go.GetComponent<Rigidbody2D>();
       rb.position = caller.mouthPosition;
     }
@@ -97,7 +95,6 @@ class Boss1Pattern6_Geyser : BossPattern<Boss1>{
       Parent = ProjectileLibrary.CreateContainer("Boss1 Pattern6 Geyser > Tears"),
     };
     geyserPool = new GameObjectPool(blueprint2, 20, 50) {
-      Transform = ResetGeyserProjectile,
       Parent = ProjectileLibrary.CreateContainer("Boss1 Pattern6 Geyser > Geyser"),
     };
     tearsCooldown = new CooldownTimer(0.01f);

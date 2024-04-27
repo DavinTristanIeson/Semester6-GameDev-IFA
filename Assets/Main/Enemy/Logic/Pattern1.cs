@@ -10,19 +10,18 @@ class Boss1Pattern1_BOWAP : BossPattern<Boss1> {
     this.boss = boss;
     var blueprint = boss.Projectiles.Get(ProjectileType.Tear);
     pool = new GameObjectPool(blueprint, 300, 1000) {
-      Transform = ResetProjectile,
       Parent = ProjectileLibrary.CreateContainer("Boss1 Pattern1 BOWAP"),
     };
     cooldown = new CooldownTimer(0.001f);
-  }
-  public void ResetProjectile(GameObject go){    
-    go.GetComponent<BehaviorManager>().Behavior = new ProjectileBehavior.Propulsion(5f, rotation / 4f);
   }
   public override void Execute(Boss1 boss){
     if (cooldown.Try()){
       Vector2 offset = Difficulty == DifficultyMode.Challenge ? Calculate.Vector.WithAngle(rotation) * 0.7f : Vector2.zero;
       
       GameObject[] go = pool.GetMany(Difficulty == DifficultyMode.Challenge ? 2 : 1);
+      foreach (var g in go){
+        g.GetComponent<BehaviorManager>().Behavior = new ProjectileBehavior.Propulsion(5f, rotation / 4f);
+      }
 
       var rb = go[0].GetComponent<Rigidbody2D>();
       rb.position = boss.eyesPosition - offset;

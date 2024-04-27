@@ -15,15 +15,10 @@ public class Boss1Pattern2_SineWave : BossPattern<Boss1> {
     velocity.y *= Mathf.Sin(nowPos.x) * (Difficulty == DifficultyMode.Challenge ? 2f : 1f);
     projectile.rb.MovePosition(nowPos + (velocity * Time.fixedDeltaTime));
   }
-  void ResetProjectile(GameObject go){
-    go.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
-    blueprint.GetComponent<BehaviorManager>().Behavior = new ProjectileBehavior.Custom(Behavior);
-  }
   public Boss1Pattern2_SineWave(Boss1 boss){
     this.boss = boss;
     blueprint = boss.Projectiles.Get(ProjectileType.Regular);
     pool = new GameObjectPool(blueprint, 20, 100) {
-      Transform = ResetProjectile,
       Parent = ProjectileLibrary.CreateContainer("Boss1 Pattern2 SineWave")
     };
     cooldown = new CooldownTimer(0.05f);
@@ -32,6 +27,8 @@ public class Boss1Pattern2_SineWave : BossPattern<Boss1> {
   public override void Execute(Boss1 caller){
     if (cooldown.Try()){
       var go = pool.Get();
+      go.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
+      go.GetComponent<BehaviorManager>().Behavior = new ProjectileBehavior.Custom(Behavior);
       var rb = go.GetComponent<Rigidbody2D>();
       Vector2 yOffset = Vector2.up * ((float) Math.Sin(Time.time) * 3f);
       rb.position = caller.rb.position + yOffset;

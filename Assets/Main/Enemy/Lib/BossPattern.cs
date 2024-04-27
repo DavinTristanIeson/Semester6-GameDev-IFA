@@ -31,7 +31,7 @@ public class BossPatternManager<T> where T : MonoBehaviour {
   private const int NO_PATTERN = -1;
   private int currentPattern = NO_PATTERN;
   public DifficultyMode difficulty;
-  public BossPatternManager(BossPattern<T>[] patterns, DifficultyMode difficulty, float patternLength = 60.0f){
+  public BossPatternManager(BossPattern<T>[] patterns, DifficultyMode difficulty, float patternLength = 20.0f){
     this.patterns = patterns;
     foreach (var pattern in patterns){
       pattern.Difficulty = difficulty;

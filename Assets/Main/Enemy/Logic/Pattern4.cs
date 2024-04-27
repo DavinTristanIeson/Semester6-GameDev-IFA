@@ -1,4 +1,3 @@
-using UnityEditor;
 using UnityEngine;
 
 class Boss1Pattern4_SpawnRing : BossPattern<Boss1> {
@@ -32,23 +31,19 @@ class Boss1Pattern4_SpawnRing : BossPattern<Boss1> {
       go.SetActive(false);
     }
   }
-
-  void ResetMainProjectile(GameObject go){
-    go.GetComponent<Rigidbody2D>().position = boss.mouthPosition;
-    float size = 8f;
-    go.transform.localScale = new Vector3(size, size, size);
-    go.GetComponent<BehaviorManager>().Behavior = new ProjectileBehavior.Merge(
-      new ScriptableBehavior<GameObject>[] {
-        new ProjectileBehavior.Homing(boss.Player, 0.5f),
-        new ProjectileBehavior.Propulsion(1f),
-        new ProjectileBehavior.Spawner(SpawnChildProjectile, 1f),
-      }
-    );
-  }
-
   public override void Execute(Boss1 caller){
     if (cooldown.Try()){
-      ResetMainProjectile(pool.Get());
+      var go = pool.Get();
+      go.GetComponent<Rigidbody2D>().position = boss.mouthPosition;
+      float size = 8f;
+      go.transform.localScale = new Vector3(size, size, size);
+      go.GetComponent<BehaviorManager>().Behavior = new ProjectileBehavior.Merge(
+        new ScriptableBehavior<GameObject>[] {
+          new ProjectileBehavior.Homing(boss.Player, 0.5f),
+          new ProjectileBehavior.Propulsion(1f),
+          new ProjectileBehavior.Spawner(SpawnChildProjectile, 1f),
+        }
+      );
     }    
   }
 

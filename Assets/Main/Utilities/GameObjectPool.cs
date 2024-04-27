@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -17,7 +16,7 @@ public class GameObjectPool {
   
 
   GameObject OnCreate(){
-    var go = GameObject.Instantiate(Blueprint);
+    var go = GameObject.Instantiate(Blueprint, new Vector3(-1000.0f, 0.0f, Blueprint.transform.position.z), Quaternion.identity);
     go.SetActive(false);
     go.AddComponent<GameObjectReturnToPool>();
     go.GetComponent<GameObjectReturnToPool>().Pool = this;
@@ -95,6 +94,7 @@ public class GameObjectPool {
 
   public void Revoke(){
     foreach (GameObject go in outgoing.ToArray()){
+      go.transform.Translate(new Vector3(-1000f, 0f, 0f));
       Release(go);
     }
   }

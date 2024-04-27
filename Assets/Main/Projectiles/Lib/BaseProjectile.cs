@@ -4,6 +4,9 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class BaseProjectile : MonoBehaviour {
+  float timeSinceInvisible = 0;
+  bool invisible = false;
+
   public Rigidbody2D rb {
     get => GetComponent<Rigidbody2D>();
   }
@@ -25,7 +28,22 @@ public class BaseProjectile : MonoBehaviour {
     gameObject.SetActive(false);
   }
 
+  public void OnEnable(){
+    invisible = false;
+  }
+
+  void Update(){
+    if (invisible && timeSinceInvisible + 1.0f <= Time.time){
+      Deactivate();
+    }
+  }
+
+  void OnBecameVisible(){
+    invisible = false;
+  }
+
   void OnBecameInvisible(){
-    Deactivate();
+    invisible = true;
+    timeSinceInvisible = Time.time;
   }
 }
