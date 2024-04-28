@@ -29,6 +29,7 @@ public class GameObjectPool {
     if (Transform is ScriptableAction<GameObject> tf){
       tf(obj);
     }
+    obj.GetComponent<GameObjectReturnToPool>().Pool = this;
     obj.SetActive(true);
     outgoing.Add(obj);
   }
@@ -89,6 +90,7 @@ public class GameObjectPool {
     return list;
   }
   public void Release(GameObject obj){
+    obj.GetComponent<GameObjectReturnToPool>().Pool = null;
     pool.Release(obj);
   }
 

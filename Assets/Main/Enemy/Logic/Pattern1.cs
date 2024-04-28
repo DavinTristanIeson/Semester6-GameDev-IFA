@@ -33,7 +33,7 @@ class Boss1Pattern1_BOWAP : BossPattern<Boss1> {
       }
     };
     rotation = (rotation + (int) rotationStep) % 1440;
-    rotationStep += Difficulty == DifficultyMode.Casual ? 1f : 0.1f;
+    rotationStep += 1f;
   }
 
   public override void Start(Boss1 caller){

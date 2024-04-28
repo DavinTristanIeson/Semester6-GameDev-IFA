@@ -49,8 +49,8 @@ class Boss1Pattern4_SpawnRing : BossPattern<Boss1> {
 
   public override void Start(Boss1 caller){
     cooldown.WaitTime = Difficulty switch {
-      DifficultyMode.Casual => 4f,
-      DifficultyMode.Normal => 3f,
+      DifficultyMode.Casual => 2f,
+      DifficultyMode.Normal => 2.5f,
       DifficultyMode.Challenge => 3f,
       _ => 3f,
     };

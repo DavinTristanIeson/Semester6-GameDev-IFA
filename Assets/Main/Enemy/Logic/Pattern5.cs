@@ -16,7 +16,7 @@ class Boss1Pattern5_Tunnel : BossPattern<Boss1>{
     return Calculate.Vector.AngleTowards(boss.rb.position, target);
   }
   float GetHomingAngle(){
-    return Calculate.Vector.AngleTowards(boss.rb.position, boss.Player.GetComponent<Rigidbody2D>().position);
+    return Calculate.Vector.AngleTowards(boss.eyesPosition, boss.Player.GetComponent<Rigidbody2D>().position);
   }
   public override void Execute(Boss1 caller){
     if (barrierCooldown.Try()){
