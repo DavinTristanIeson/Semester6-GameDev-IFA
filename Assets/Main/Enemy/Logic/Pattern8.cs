@@ -77,10 +77,12 @@ class Boss1Pattern8_BounceCrush : BossPattern<Boss1>{
 
   public override void Destroy(Boss1 caller){
     pool.Destroy();
+    quakePool.Destroy();
   }
 
   public override void Deactivate(Boss1 caller){
     pool.Revoke();
+    quakePool.Revoke();
   }
 
   public Boss1Pattern8_BounceCrush(Boss1 boss){

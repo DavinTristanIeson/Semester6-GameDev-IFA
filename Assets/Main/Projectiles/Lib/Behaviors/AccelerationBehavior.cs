@@ -10,6 +10,8 @@ namespace ProjectileBehavior {
     public float Speed;
     public float Min = 0;
     public float Max = float.MaxValue;
+    public ScriptableAction<GameObject>? WhenMax;
+    public ScriptableAction<GameObject>? WhenMin;
     public AcceleratorScriptableAction? Accelerate;
 
     public Acceleration(float initial, float increment, float min = 0, float max = float.MaxValue){
@@ -40,6 +42,13 @@ namespace ProjectileBehavior {
         Vector2 direction = Calculate.Vector.WithAngle(rb.rotation);
         Vector2 force = direction * Speed;
         rb.MovePosition(rb.position + (force * Time.fixedDeltaTime));
+      }
+
+      if (Speed == Max && WhenMax is not null){
+        WhenMax(go);
+      }
+      if (Speed == Min && WhenMin is not null){
+        WhenMin(go);
       }
     }
   }
