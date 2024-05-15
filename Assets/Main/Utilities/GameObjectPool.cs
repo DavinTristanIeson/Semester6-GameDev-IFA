@@ -42,7 +42,7 @@ public class GameObjectPool {
     outgoing.Remove(obj);
   }
 
-  public GameObjectPool(GameObject blueprint, int size){
+  public GameObjectPool(GameObject blueprint){
     Blueprint = blueprint;
     blueprint.SetActive(false);
     pool = new ObjectPool<GameObject>(
@@ -50,30 +50,11 @@ public class GameObjectPool {
       actionOnGet: OnGet,
       actionOnRelease: OnRelease,
       actionOnDestroy: OnDestroy,
-      defaultCapacity: size,
-      maxSize: size,
       collectionCheck: false
     );
     outgoing = new HashSet<GameObject>();
   }
 
-  public GameObjectPool(
-    GameObject blueprint,
-    int poolMin,
-    int poolMax
-  ){
-    Blueprint = blueprint;
-    pool = new ObjectPool<GameObject>(
-      OnCreate,
-      actionOnGet: OnGet,
-      actionOnRelease: OnRelease,
-      actionOnDestroy: OnDestroy,
-      defaultCapacity: poolMin,
-      maxSize: poolMax,
-      collectionCheck: false
-    );
-    outgoing = new HashSet<GameObject>();
-  }
   ~GameObjectPool(){
     pool.Dispose();
     outgoing.Clear();

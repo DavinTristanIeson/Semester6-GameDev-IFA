@@ -24,8 +24,8 @@ class Boss1Pattern3_Missile : BossPattern<Boss1> {
     go.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
     var behavior = go.GetComponent<BehaviorManager>();
     behavior.Behavior = new ProjectileBehavior.Timing(2)  
-      .Chain(0, new ProjectileBehavior.Custom(), 1.5f)
-      .Chain(1, new ProjectileBehavior.Propulsion(3.0f));
+      .Then(new ProjectileBehavior.Custom(), 1.5f)
+      .Then(new ProjectileBehavior.Propulsion(3.0f));
     var rb = go.GetComponent<Rigidbody2D>();
     rb.position = self.GetComponent<Rigidbody2D>().position;
     rb.rotation = Mathf.Sin(Time.time) * 360;
@@ -39,11 +39,11 @@ class Boss1Pattern3_Missile : BossPattern<Boss1> {
       go.GetComponent<Rigidbody2D>().position = boss.mouthPosition;
       behaviors.Behavior = new ProjectileBehavior.Merge(new ScriptableBehavior<GameObject>[] {
           new ProjectileBehavior.Timing(3)
-            .Chain(0, new ProjectileBehavior.Propulsion(3f) {
+            .Then(new ProjectileBehavior.Propulsion(3f) {
               Rotation = Random.Range(0, 360),
             }, 1f)
-            .Chain(1, new ProjectileBehavior.Custom(GoToPlayer), 0.2f)
-            .Chain(2, new ProjectileBehavior.Propulsion(8f)),
+            .Then(new ProjectileBehavior.Custom(GoToPlayer), 0.2f)
+            .Then(new ProjectileBehavior.Propulsion(8f)),
           new ProjectileBehavior.Spawner(SpawnChild, Difficulty switch {
             DifficultyMode.Casual => 0.1f,
             DifficultyMode.Normal => 0.05f,
@@ -74,7 +74,7 @@ class Boss1Pattern3_Missile : BossPattern<Boss1> {
   public Boss1Pattern3_Missile(Boss1 boss){
     this.boss = boss;
     blueprint = boss.Projectiles.Get(ProjectileType.Regular);
-    pool = new GameObjectPool(blueprint, 100, 300) {
+    pool = new GameObjectPool(blueprint) {
       Parent = ProjectileLibrary.CreateContainer("Boss1 Pattern3 Missile")
     };
     cooldown = new CooldownTimer(2f);

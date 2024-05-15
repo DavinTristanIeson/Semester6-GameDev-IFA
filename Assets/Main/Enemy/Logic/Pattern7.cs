@@ -21,10 +21,12 @@ class Boss1Pattern7_Punch : BossPattern<Boss1>{
       var go = ResetFistProjectile(pool.Get());
       var bm = go.GetComponent<BehaviorManager>();
       bm.Behavior = new ProjectileBehavior.Timing(2)
-        .Chain(0, new ProjectileBehavior.Merge(2)
-          .Set(0, new ProjectileBehavior.Acceleration(0f, 0.025f, 4f))
-          .Set(1, new ProjectileBehavior.Homing(boss.Player, (int) Difficulty * 1.5f)), 10f)
-        .Chain(1, new ProjectileBehavior.Propulsion(8f));
+        .Then(new ProjectileBehavior.Merge(2)
+          .With(new ProjectileBehavior.Acceleration(0f, 0.025f, 4f))
+          .With(new ProjectileBehavior.Homing(boss.Player) {
+            MaxRotation = (int) Difficulty * 1.5f,
+          }), 10f)
+        .Then(new ProjectileBehavior.Propulsion(8f));
     }
   }
 
@@ -63,7 +65,7 @@ class Boss1Pattern7_Punch : BossPattern<Boss1>{
   public Boss1Pattern7_Punch(Boss1 boss){
     this.boss = boss;
     var blueprint = boss.Projectiles.Get(ProjectileType.Regular);
-    pool = new GameObjectPool(blueprint, 10, 50) {
+    pool = new GameObjectPool(blueprint) {
       Parent = ProjectileLibrary.CreateContainer("Boss1 Pattern7 Punches"),
     };
     cooldown = new CooldownTimer(0.01f);

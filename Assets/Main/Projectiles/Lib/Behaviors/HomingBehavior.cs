@@ -8,14 +8,17 @@ namespace ProjectileBehavior {
   class Homing : ScriptableBehavior<GameObject> {
     public GameObject? Target;
     public GetPositionFn? GetPosition;
-    public float MaxDegreesDelta;
-    public Homing(GameObject target, float maxRotation){
+    public Vector2? TargetPosition;
+    public bool Once = false;
+    public float MaxRotation;
+    public Homing(GameObject target){
       Target = target;
-      MaxDegreesDelta = maxRotation;
     }
-    public Homing(GetPositionFn getter, float maxRotation){
+    public Homing(Vector2 target){
+      TargetPosition = target;
+    }
+    public Homing(GetPositionFn getter){
       GetPosition = getter;
-      MaxDegreesDelta = maxRotation;
     }
 
     float getAngle(GameObject caller){
@@ -25,8 +28,10 @@ namespace ProjectileBehavior {
         targetPosition = target.GetComponent<Rigidbody2D>().position;
       } else if (GetPosition is GetPositionFn getPosition){
         targetPosition = getPosition(caller);
+      } else if (TargetPosition is Vector2 position){
+        targetPosition = position;
       } else {
-        throw new Exception("GetPosition or Target must not be null!");
+        return rb.rotation;
       }
       Vector2 currentPosition = rb.position;
       return Calculate.Vector.AngleTowards(currentPosition, targetPosition);
@@ -40,7 +45,11 @@ namespace ProjectileBehavior {
     public void Execute(GameObject caller){
       var rb = caller.GetComponent<Rigidbody2D>();
       float angle = getAngle(caller);
-      rb.rotation = Quaternion.RotateTowards(Quaternion.Euler(0, 0, rb.rotation), Quaternion.Euler(0, 0, angle), MaxDegreesDelta).eulerAngles.z;
+      rb.rotation = Quaternion.RotateTowards(Quaternion.Euler(0, 0, rb.rotation), Quaternion.Euler(0, 0, angle), MaxRotation).eulerAngles.z;
+
+      if (Once){
+        caller.GetComponent<BehaviorManager>().GetBehaviorOfType<ProjectileBehavior.Timing>()?.Next(caller);
+      }
     }
   }
 }

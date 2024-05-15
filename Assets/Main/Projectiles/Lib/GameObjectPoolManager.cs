@@ -5,8 +5,6 @@ using UnityEngine;
 /// </summary>
 class GameObjectPoolManager : MonoBehaviour {
   [SerializeField]
-  int poolSize = 100;
-  [SerializeField]
   GameObject blueprint;
   [SerializeField]
   string parentName;
@@ -28,7 +26,7 @@ class GameObjectPoolManager : MonoBehaviour {
 
   void OnEnable(){
     if (pool == null){
-      pool = new GameObjectPool(blueprint, poolSize);
+      pool = new GameObjectPool(blueprint);
     }
     if (parentName is string parent && parent.Length > 0){
       pool.Parent = new GameObject(parent);

@@ -8,17 +8,23 @@ public class Boss1Pattern2_SineWave : BossPattern<Boss1> {
   private CooldownTimer cooldown;
   private int rotation = 0;
 
-  void Behavior(GameObject caller){
+  void Behavior(GameObject caller, float direction){
     var projectile = caller.GetComponent<BaseProjectile>();
     Vector2 nowPos = projectile.rb.position;
-    Vector2 velocity = projectile.Direction * -5f;
+    Vector2 velocity = projectile.Direction * (5f * direction);
     velocity.y *= Mathf.Sin(nowPos.x) * (Difficulty == DifficultyMode.Challenge ? 2f : 1f);
     projectile.rb.MovePosition(nowPos + (velocity * Time.fixedDeltaTime));
+  }
+  void BehaviorLeft(GameObject caller){
+    Behavior(caller, -1f);
+  }
+  void BehaviorRight(GameObject caller){
+    Behavior(caller, 1f);
   }
   public Boss1Pattern2_SineWave(Boss1 boss){
     this.boss = boss;
     blueprint = boss.Projectiles.Get(ProjectileType.Regular);
-    pool = new GameObjectPool(blueprint, 20, 100) {
+    pool = new GameObjectPool(blueprint) {
       Parent = ProjectileLibrary.CreateContainer("Boss1 Pattern2 SineWave")
     };
     cooldown = new CooldownTimer(0.05f);
@@ -28,8 +34,11 @@ public class Boss1Pattern2_SineWave : BossPattern<Boss1> {
     if (cooldown.Try()){
       var go = pool.Get();
       go.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
-      go.GetComponent<BehaviorManager>().Behavior = new ProjectileBehavior.Custom(Behavior);
+
       var rb = go.GetComponent<Rigidbody2D>();
+      var playerX = caller.Player.GetComponent<Rigidbody2D>().position.x;
+      var bossX = caller.GetComponent<Rigidbody2D>().position.x;
+      go.GetComponent<BehaviorManager>().Behavior = new ProjectileBehavior.Custom(playerX < bossX ? BehaviorLeft : BehaviorRight);
       Vector2 yOffset = Vector2.up * ((float) Math.Sin(Time.time) * 3f);
       rb.position = caller.rb.position + yOffset;
       float rotationFactor = Difficulty switch {
@@ -39,7 +48,6 @@ public class Boss1Pattern2_SineWave : BossPattern<Boss1> {
         _ => 2,
       };
       rb.rotation = Math.Abs(rotation - 180) - 90;
-      go.GetComponent<BehaviorManager>().Action = Behavior;
     }
     rotation = (rotation + 1) % 360;
   }

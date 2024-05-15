@@ -3,12 +3,15 @@ using UnityEngine;
 #nullable enable
 
 namespace ProjectileBehavior {
+  delegate bool TimingCondition(GameObject go);
   class TimingAgent {
     public ScriptableBehavior<GameObject> Behavior;
     public float? WaitTime;
-    public TimingAgent(ScriptableBehavior<GameObject> behavior, float? waitTime = null){
+    public TimingCondition? Condition;
+    public TimingAgent(ScriptableBehavior<GameObject> behavior, float? waitTime = null, TimingCondition? condition = null){
       Behavior = behavior;
       WaitTime = waitTime;
+      Condition = condition;
     }
   }
 
@@ -32,14 +35,13 @@ namespace ProjectileBehavior {
       behaviors = new TimingAgent[count];
     }
 
-    public Timing Chain(int index, ScriptableBehavior<GameObject> agent){
-      behaviors[index] = new TimingAgent(agent);
+    private int thenIndex = 0;
+    public Timing Then(ScriptableBehavior<GameObject> agent, float? waitTime = null, TimingCondition? condition = null){
+      behaviors[thenIndex] = new TimingAgent(agent, waitTime, condition);
+      thenIndex++;
       return this;
     }
-    public Timing Chain(int index, ScriptableBehavior<GameObject> agent, float waitTime){
-      behaviors[index] = new TimingAgent(agent, waitTime);
-      return this;
-    }
+
 
     ScriptableBehavior<GameObject> currentBehavior {
       get => behaviors[behaviorIndex].Behavior;
@@ -52,6 +54,7 @@ namespace ProjectileBehavior {
         if (IsRepeating){
           currentBehavior.Deactivate(caller);
           behaviorIndex = 0;
+          currentBehavior.Start(caller);
         }
         return;
       } else {
@@ -72,6 +75,8 @@ namespace ProjectileBehavior {
     public void Execute(GameObject caller){
       var agent = behaviors[behaviorIndex];
       if (agent.WaitTime is not null && Time.time >= lastChangeTime + agent.WaitTime){
+        Next(caller);
+      } else if (agent.Condition is not null && agent.Condition(caller)){
         Next(caller);
       }
 

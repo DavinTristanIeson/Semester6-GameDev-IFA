@@ -45,8 +45,8 @@ class Boss1Pattern6_Geyser : BossPattern<Boss1>{
       var target = boss.Player.GetComponent<Rigidbody2D>().position;
       var angle = Calculate.Vector.AngleTowards(boss.rb.position, target);
       go.GetComponent<BehaviorManager>().Behavior = new ProjectileBehavior.Merge(2)
-        .Set(0, new ProjectileBehavior.Propulsion(4f, angle))
-        .Set(1, new ProjectileBehavior.Acceleration(1f, 0.1f, 1f, Difficulty switch {
+        .With(new ProjectileBehavior.Propulsion(4f, angle))
+        .With(new ProjectileBehavior.Acceleration(1f, 0.1f, 1f, Difficulty switch {
           DifficultyMode.Casual => 10f,
           DifficultyMode.Normal => 20f,
           DifficultyMode.Challenge => 15f,
@@ -91,10 +91,10 @@ class Boss1Pattern6_Geyser : BossPattern<Boss1>{
     this.boss = boss;
     var blueprint = boss.Projectiles.Get(ProjectileType.Tear);
     var blueprint2 = boss.Projectiles.Get(ProjectileType.Effector);
-    tearsPool = new GameObjectPool(blueprint, 300, 1000) {
+    tearsPool = new GameObjectPool(blueprint) {
       Parent = ProjectileLibrary.CreateContainer("Boss1 Pattern6 Geyser > Tears"),
     };
-    geyserPool = new GameObjectPool(blueprint2, 20, 50) {
+    geyserPool = new GameObjectPool(blueprint2) {
       Parent = ProjectileLibrary.CreateContainer("Boss1 Pattern6 Geyser > Geyser"),
     };
     tearsCooldown = new CooldownTimer(0.01f);

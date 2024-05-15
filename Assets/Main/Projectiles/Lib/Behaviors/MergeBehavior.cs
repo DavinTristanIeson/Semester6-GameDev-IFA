@@ -16,8 +16,10 @@ namespace ProjectileBehavior {
       behaviors = new ScriptableBehavior<GameObject>[count];
     }
 
-    public Merge Set(int index, ScriptableBehavior<GameObject> behavior){
-      behaviors[index] = behavior;
+    private int withIndex = 0;
+    public Merge With(ScriptableBehavior<GameObject> behavior){
+      behaviors[withIndex] = behavior;
+      withIndex++;
       return this;
     }
 

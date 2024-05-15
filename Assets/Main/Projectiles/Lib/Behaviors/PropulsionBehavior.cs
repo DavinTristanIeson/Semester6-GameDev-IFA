@@ -16,6 +16,11 @@ namespace ProjectileBehavior {
     /// </summary>
     public float Speed;
 
+    /// <summary>
+    /// Is the projectile allowed to leave the game area or not
+    /// </summary>
+    public bool Cordoned = false;
+
     public Propulsion(float speed, float? rotation = null){
       Speed = speed;
       Rotation = rotation;
@@ -30,7 +35,12 @@ namespace ProjectileBehavior {
       var rb = caller.GetComponent<Rigidbody2D>();
       Vector2 direction = Calculate.Vector.WithAngle(rb.rotation);
       Vector2 force = direction * Speed;
-      rb.MovePosition(rb.position + (force * Time.fixedDeltaTime));
+
+      Vector2 newPosition = rb.position + (force * Time.fixedDeltaTime);
+      if (Cordoned){
+        newPosition = BoundaryInformation.GetInstance().Clamp(newPosition);
+      }
+      rb.MovePosition(newPosition);
     }
   }
 }

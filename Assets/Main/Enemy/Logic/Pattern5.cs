@@ -66,7 +66,7 @@ class Boss1Pattern5_Tunnel : BossPattern<Boss1>{
   public Boss1Pattern5_Tunnel(Boss1 boss){
     this.boss = boss;
     var blueprint = boss.Projectiles.Get(ProjectileType.Tear);
-    pool = new GameObjectPool(blueprint, 300, 1000) {
+    pool = new GameObjectPool(blueprint) {
       Parent = ProjectileLibrary.CreateContainer("Boss1 Pattern5 Tunnel"),
     };
     barrierCooldown = new CooldownTimer(0.01f);

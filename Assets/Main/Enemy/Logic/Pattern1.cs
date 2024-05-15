@@ -9,7 +9,7 @@ class Boss1Pattern1_BOWAP : BossPattern<Boss1> {
   public Boss1Pattern1_BOWAP(Boss1 boss){
     this.boss = boss;
     var blueprint = boss.Projectiles.Get(ProjectileType.Tear);
-    pool = new GameObjectPool(blueprint, 300, 1000) {
+    pool = new GameObjectPool(blueprint) {
       Parent = ProjectileLibrary.CreateContainer("Boss1 Pattern1 BOWAP"),
     };
     cooldown = new CooldownTimer(0.001f);

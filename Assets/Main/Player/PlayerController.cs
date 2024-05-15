@@ -71,16 +71,8 @@ public class PlayerController : MonoBehaviour {
       return;
     }
 
-    // https://forum.unity.com/threads/keeping-the-player-within-the-boundaries-of-the-camera.245693/
-    var dist = (transform.position - Camera.main.transform.position).z;
-    var leftBorder = Camera.main.ViewportToWorldPoint(new Vector3(0,0,dist)).x;
-    var rightBorder = Camera.main.ViewportToWorldPoint(new Vector3(1,0,dist)).x;
-    var topBorder = Camera.main.ViewportToWorldPoint(new Vector3(0,0,dist)).y;
-    var bottomBorder = Camera.main.ViewportToWorldPoint(new Vector3(0,1,dist)).y;
+    var boundary = BoundaryInformation.GetInstance();
     Vector3 newPos = rigidBody.position + velocity * Time.fixedDeltaTime;
-    rigidBody.MovePosition(new Vector2(
-      Mathf.Clamp(newPos.x, leftBorder, rightBorder),
-      Mathf.Clamp(newPos.y, topBorder, bottomBorder)
-    ));
+    rigidBody.MovePosition(boundary.Clamp(newPos));
   }
 }
