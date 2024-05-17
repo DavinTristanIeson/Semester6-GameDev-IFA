@@ -51,19 +51,19 @@ class Boss1Pattern9_Spirals : BossPattern<Boss1>{
     pool = new GameObjectPool(blueprint) {
       Parent = ProjectileLibrary.CreateContainer("Boss1 Pattern9 Spirals"),
     };
-    spiralCooldowns = new CooldownTimer[] {
-      new CooldownTimer(0.5f),
+    spiralCooldowns = new CooldownTimer[3] {
+      new CooldownTimer(0.1f),
       new CooldownTimer(0.4f),
-      new CooldownTimer(0.1f)
+      new CooldownTimer(0.5f)
     };
-    spiralCooldownBuffers = new float[3] { 0.3f, 0.2f, 0.1f };
+    spiralCooldownBuffers = new float[3] { 0.1f, 0.2f, 0.3f };
     spiralAngles = new int[3];
     spiralSpawning = new bool[3];
     for (int i = 0; i < 3; i++){
       spiralAngles[i] = UnityEngine.Random.Range(0, 360);
       spiralSpawning[i] = true;
     }
-    spiralAngularSpeed = new int[] { 2, -6, 12 };
-    spiralVelocities = new float[] { 1f, 2f, 4f };
+    spiralAngularSpeed = new int[] { 12, -6, 2 };
+    spiralVelocities = new float[] { 4f, 2f, 1f };
   }
 }
