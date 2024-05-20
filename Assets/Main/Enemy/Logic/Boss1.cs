@@ -52,6 +52,7 @@ public class Boss1 : MonoBehaviour {
         new Boss1Pattern8_BounceCrush(this),
         new Boss1Pattern11_BigFist(this),
         new Boss1Pattern12_Meteors(this),
+        new Boss1Pattern13_AirPunch(this),
 
         // Breakdown Phase
         new Boss1Pattern1_BOWAP(this),

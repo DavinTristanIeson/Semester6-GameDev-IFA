@@ -10,6 +10,8 @@ namespace ProjectileBehavior {
   class Spawner : ScriptableBehavior<GameObject> {
     public ScriptableAction<GameObject> Spawn;
     public bool Once = false;
+    private int spawnCount = 0;
+    public int MaxSpawnCount = int.MaxValue;
     CooldownTimer cooldown;
 
     public Spawner(ScriptableAction<GameObject> spawn, float spawnInterval = 1f){
@@ -18,8 +20,9 @@ namespace ProjectileBehavior {
     }
 
     public void Execute(GameObject caller){
-      if (cooldown.Try()){
+      if (cooldown.Try() && spawnCount < MaxSpawnCount){
         Spawn(caller);
+        spawnCount++;
         if (Once){
           caller.GetComponent<BehaviorManager>().GetBehaviorOfType<Timing>()?.Next(caller);
         }

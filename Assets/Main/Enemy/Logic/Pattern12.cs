@@ -15,7 +15,6 @@ class Boss1Pattern12_Meteors : BossPattern<Boss1>{
     for (int i = 0; i < projectileCount; i++) {
       GameObject projectile = projectiles[i];
       projectile.transform.localScale = Vector3.one;
-      projectile.transform.localScale = new Vector3(1f, 1f, 1f);
       
       var rb = projectile.GetComponent<Rigidbody2D>();
       rb.position = parentRb.position;
