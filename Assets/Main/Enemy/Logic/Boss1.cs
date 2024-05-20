@@ -41,17 +41,23 @@ public class Boss1 : MonoBehaviour {
     healthBar.SetMaxHealth(health.OriginalHealth);
     if (patterns == null){
       var basePatterns = new BossPattern<Boss1>[] {
-        new Boss1Pattern1_BOWAP(this),
+        // Sleeping Phase
         new Boss1Pattern2_SineWave(this),
         new Boss1Pattern3_Missile(this),
         new Boss1Pattern4_SpawnRing(this),
-        new Boss1Pattern5_Tunnel(this),
-        new Boss1Pattern6_Geyser(this),
+        new Boss1Pattern10_BigZ(this),
+
+        // Violent Phase
         new Boss1Pattern7_Punch(this),
         new Boss1Pattern8_BounceCrush(this),
+        new Boss1Pattern11_BigFist(this),
+        new Boss1Pattern12_Meteors(this),
+
+        // Breakdown Phase
+        new Boss1Pattern1_BOWAP(this),
+        new Boss1Pattern5_Tunnel(this),
+        new Boss1Pattern6_Geyser(this),
         new Boss1Pattern9_Spirals(this),
-        new Boss1Pattern10_BigZ(this),
-        new Boss1Pattern11_BigFist(this)
       };
       patterns = new BossPatternManager<Boss1>(basePatterns, difficultyMode, patternLength: 20.0f);
     }

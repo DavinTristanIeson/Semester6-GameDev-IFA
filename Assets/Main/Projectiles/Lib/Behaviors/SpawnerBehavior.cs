@@ -6,8 +6,10 @@ namespace ProjectileBehavior {
   /// <summary>
   /// Default behavior for projectiles that spawn other game objects every interval or so
   /// </summary>
+  
   class Spawner : ScriptableBehavior<GameObject> {
     public ScriptableAction<GameObject> Spawn;
+    public bool Once = false;
     CooldownTimer cooldown;
 
     public Spawner(ScriptableAction<GameObject> spawn, float spawnInterval = 1f){
@@ -18,6 +20,9 @@ namespace ProjectileBehavior {
     public void Execute(GameObject caller){
       if (cooldown.Try()){
         Spawn(caller);
+        if (Once){
+          caller.GetComponent<BehaviorManager>().GetBehaviorOfType<Timing>()?.Next(caller);
+        }
       }
     }
   }
