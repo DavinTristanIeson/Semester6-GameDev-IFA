@@ -101,4 +101,41 @@ namespace ProjectileBehavior {
       return null;
     }
   }
+
+  class Wait : ScriptableBehavior<GameObject>, IGetBehavior {
+    public float? Delay;
+    public float? Until;
+    private float lastTime = 0.0f;
+    public TimingCondition? Condition;
+
+    public Wait(){}
+
+    public void Start(GameObject go){
+      lastTime = Time.time;
+    }
+
+    void next(GameObject go){
+      go.GetComponent<BehaviorManager>().GetBehaviorOfType<Timing>()?.Next(go);
+    }
+
+    public void Execute(GameObject go){
+      float now = Time.time;
+      if (Condition is TimingCondition condition && condition(go)){
+        next(go);
+      }
+      if (Delay is float delayTime && now >= lastTime + delayTime){
+        next(go);
+      }
+      if (Until is float untilTime && now >= untilTime){
+        next(go);
+      }
+    }
+    
+    public T? GetBehaviorOfType<T>() where T : class? {
+      if (this is T behavior){
+        return behavior;
+      }
+      return null;
+    }
+  }
 }

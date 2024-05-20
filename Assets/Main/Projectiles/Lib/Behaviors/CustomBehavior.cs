@@ -34,4 +34,9 @@ namespace ProjectileBehavior {
       OnExecute = action;
     }
   }
+  class Despawn : ScriptableBehavior<GameObject> {
+    public void Start(GameObject go){
+      go.SetActive(false);
+    }
+  }
 }

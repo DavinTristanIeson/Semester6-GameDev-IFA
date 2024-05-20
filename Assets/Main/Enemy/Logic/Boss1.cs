@@ -51,6 +51,7 @@ public class Boss1 : MonoBehaviour {
         new Boss1Pattern8_BounceCrush(this),
         new Boss1Pattern9_Spirals(this),
         new Boss1Pattern10_BigZ(this),
+        new Boss1Pattern11_BigFist(this)
       };
       patterns = new BossPatternManager<Boss1>(basePatterns, difficultyMode, patternLength: 20.0f);
     }
