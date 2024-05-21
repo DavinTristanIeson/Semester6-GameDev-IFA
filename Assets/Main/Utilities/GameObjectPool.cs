@@ -13,6 +13,10 @@ public class GameObjectPool {
   private ObjectPool<GameObject> pool;
   private HashSet<GameObject> outgoing;
   public GameObject? Parent;
+
+  public IEnumerable<GameObject> GetActiveObjects(){
+    return outgoing;
+  }
   
 
   GameObject OnCreate(){
