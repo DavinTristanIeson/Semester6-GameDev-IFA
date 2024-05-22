@@ -73,9 +73,45 @@ public class BossPatternManager<T> where T : MonoBehaviour {
     }
   }
 
+  public void Deactivate(T caller){
+    Pattern.Deactivate(caller);
+  }
+
   public void Destroy(T caller){
     if (currentPattern != NO_PATTERN){
       Pattern.Destroy(caller);
+    }
+  }
+}
+
+class BossPhase<T> where T : MonoBehaviour {
+  public BossPatternManager<T> Pattern { get; private set; }
+  public int Health { get; private set; }
+  public BossPhase(BossPatternManager<T> pattern, int health){
+    Pattern = pattern;
+    Health = health;
+  }
+}
+class BossPhaseManager<T> where T : MonoBehaviour {
+  int phase = 0;
+  BossPhase<T>[] phases;
+  public BossPhaseManager(BossPhase<T>[] phases){
+    this.phases = phases.OrderBy((x) => -1 * x.Health).ToArray();
+  }
+
+  public void Execute(T caller, int health){
+    if (phase + 1 < phases.Length && phases[phase + 1].Health >= health){
+      phases[phase].Pattern.Deactivate(caller);
+      phase++;
+      phases[phase].Pattern.Destroy(caller);
+    }
+    phases[phase].Pattern.NextPattern(caller);
+    phases[phase].Pattern.Execute(caller);
+  }
+
+  public void Destroy(T caller){
+    foreach (var phase in phases){
+      phase.Pattern.Destroy(caller);
     }
   }
 }

@@ -33,6 +33,10 @@ class HealthManager : MonoBehaviour {
     get => health <= 0;
   }
 
+  public int HealthWhen(float percentage){
+    return (int) Mathf.Round(originalHealth * percentage);
+  }
+
   void Initialize(){
     if (cooldown == null){
       cooldown = new CooldownTimer(invincibilitySeconds);

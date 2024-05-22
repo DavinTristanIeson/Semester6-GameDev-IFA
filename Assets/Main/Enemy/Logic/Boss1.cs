@@ -6,7 +6,7 @@ using UnityEngine;
 public class Boss1 : MonoBehaviour {
   public DifficultyMode difficultyMode = DifficultyMode.Normal;
 
-  private BossPatternManager<Boss1> patterns;
+  private BossPhaseManager<Boss1> phases;
   [NonSerialized]
   public ProjectileLibrary Projectiles;
   private HealthManager health;
@@ -39,45 +39,64 @@ public class Boss1 : MonoBehaviour {
     player = GameObject.FindWithTag(Constants.Tags.Player);
     health.Reset();
     healthBar.SetMaxHealth(health.OriginalHealth);
-    if (patterns == null){
-      var basePatterns = new BossPattern<Boss1>[] {
-        // Sleeping Phase
-        new Boss1Pattern2_SineWave(this),
-        new Boss1Pattern3_Missile(this),
-        new Boss1Pattern4_SpawnRing(this),
-        new Boss1Pattern10_BigZ(this),
-        new Boss1Pattern15_Orbit(this),
-
-        // Violent Phase
-        new Boss1Pattern7_Punch(this),
-        new Boss1Pattern8_BounceCrush(this),
-        new Boss1Pattern11_BigFist(this),
-        new Boss1Pattern12_Meteors(this),
-        new Boss1Pattern13_AirPunch(this),
-
-        // Breakdown Phase
-        new Boss1Pattern1_BOWAP(this),
-        new Boss1Pattern5_Tunnel(this),
-        new Boss1Pattern6_Geyser(this),
-        new Boss1Pattern9_Spirals(this),
-        new Boss1Pattern14_Rain(this),
-
-        // Final Phase
-        new Boss1PatternFinal(this),
-      };
-      patterns = new BossPatternManager<Boss1>(basePatterns, difficultyMode, patternLength: 20.0f);
+    if (phases == null){
+      var sleepingPhase = new BossPatternManager<Boss1>(
+        new BossPattern<Boss1>[] {
+          new Boss1Pattern2_SineWave(this),
+          new Boss1Pattern3_Missile(this),
+          new Boss1Pattern4_SpawnRing(this),
+          new Boss1Pattern10_BigZ(this),
+          new Boss1Pattern15_Orbit(this)
+        },
+        difficultyMode,
+        20f
+      );
+      var violentPhase = new BossPatternManager<Boss1>(
+        new BossPattern<Boss1>[] {
+          new Boss1Pattern7_Punch(this),
+          new Boss1Pattern8_BounceCrush(this),
+          new Boss1Pattern11_BigFist(this),
+          new Boss1Pattern12_Meteors(this),
+          new Boss1Pattern13_AirPunch(this),
+        },
+        difficultyMode,
+        20f
+      );
+      var breakdownPhase = new BossPatternManager<Boss1>(
+        new BossPattern<Boss1>[] {
+           new Boss1Pattern1_BOWAP(this),
+            new Boss1Pattern5_Tunnel(this),
+            new Boss1Pattern6_Geyser(this),
+            new Boss1Pattern9_Spirals(this),
+            new Boss1Pattern14_Rain(this),
+        },
+        difficultyMode,
+        20f
+      );
+      var finalPhase = new BossPatternManager<Boss1>(
+        new BossPattern<Boss1>[] {
+          new Boss1PatternFinal(this),
+        },
+        difficultyMode,
+        60f
+      );
+      phases = new BossPhaseManager<Boss1>(new BossPhase<Boss1>[] {
+        new BossPhase<Boss1>(sleepingPhase, health.HealthWhen(1)),
+        new BossPhase<Boss1>(violentPhase, health.HealthWhen(0.6666f)),
+        new BossPhase<Boss1>(breakdownPhase, health.HealthWhen(0.3333f)),
+        new BossPhase<Boss1>(finalPhase, health.HealthWhen(0))
+      });
     }
   }
 
   void OnDisable(){
-    if (patterns != null){
-      patterns.Destroy(this);
+    if (phases != null){
+      phases.Destroy(this);
     }
   }
 
   void Update(){
-    patterns.NextPattern(this);
-    patterns.Execute(this);
+    phases.Execute(this, health.Health);
   }
 
   void OnTriggerEnter2D(Collider2D collider){
