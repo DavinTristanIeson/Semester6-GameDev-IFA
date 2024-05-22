@@ -7,7 +7,7 @@ public class BaseProjectile : MonoBehaviour {
   float timeSinceInvisible = 0;
   bool invisible = false;
   
-  public bool InstantlyDespawnWhenInvisible = false;
+  public float DeactivationDelay = 1.0f;
 
   public Rigidbody2D rb {
     get => GetComponent<Rigidbody2D>();
@@ -35,7 +35,7 @@ public class BaseProjectile : MonoBehaviour {
   }
 
   void Update(){
-    if (invisible && timeSinceInvisible + 1.0f <= Time.time){
+    if (invisible && timeSinceInvisible + DeactivationDelay <= Time.time){
       Deactivate();
     }
   }
@@ -45,9 +45,6 @@ public class BaseProjectile : MonoBehaviour {
   }
 
   void OnBecameInvisible(){
-    if (InstantlyDespawnWhenInvisible){
-      gameObject.SetActive(false);
-    }
     invisible = true;
     timeSinceInvisible = Time.time;
   }

@@ -61,6 +61,9 @@ public class Boss1 : MonoBehaviour {
         new Boss1Pattern6_Geyser(this),
         new Boss1Pattern9_Spirals(this),
         new Boss1Pattern14_Rain(this),
+
+        // Final Phase
+        new Boss1PatternFinal(this),
       };
       patterns = new BossPatternManager<Boss1>(basePatterns, difficultyMode, patternLength: 20.0f);
     }

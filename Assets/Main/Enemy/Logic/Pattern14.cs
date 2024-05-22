@@ -17,7 +17,7 @@ class Boss1Pattern14_Rain : BossPattern<Boss1>{
     if (showerCooldown.Try()){
       var projectiles = rainPool.GetMany((int) Difficulty + 1);
       foreach (var projectile in projectiles){
-        projectile.GetComponent<BaseProjectile>().InstantlyDespawnWhenInvisible = true;
+        projectile.GetComponent<BaseProjectile>().DeactivationDelay = 0.0f;
         var rb = projectile.GetComponent<Rigidbody2D>();
         rb.position = top + new Vector2(Random.Range(-1f, 1f), 0);
         rb.rotation = Calculate.Vector.AngleTowards(rb.position, bottom + new Vector2(Random.Range(-1f, 1f), 0));
@@ -28,7 +28,7 @@ class Boss1Pattern14_Rain : BossPattern<Boss1>{
       var projectiles = rainPool.GetMany((int) Difficulty + 1);
       var boundary = BoundaryInformation.GetInstance();
       foreach (var projectile in projectiles){
-        projectile.GetComponent<BaseProjectile>().InstantlyDespawnWhenInvisible = true;
+        projectile.GetComponent<BaseProjectile>().DeactivationDelay = 0.0f;
         var rb = projectile.GetComponent<Rigidbody2D>();
         rb.position = new Vector2(boundary.GetRandomX(), boundary.y1);
         rb.rotation = -90f;
@@ -38,7 +38,7 @@ class Boss1Pattern14_Rain : BossPattern<Boss1>{
     if (fountainCooldown.Try()){
       var projectiles = rainPool.GetMany(3);
       foreach (var projectile in projectiles){
-        projectile.GetComponent<BaseProjectile>().InstantlyDespawnWhenInvisible = true;
+        projectile.GetComponent<BaseProjectile>().DeactivationDelay = 0.0f;
         var rb = projectile.GetComponent<Rigidbody2D>();
         rb.position = boss.eyesPosition;
         rb.rotation = Random.Range(90f, 110f);

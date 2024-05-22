@@ -36,6 +36,7 @@ class Boss1Pattern15_Orbit : BossPattern<Boss1>{
       foreach (var projectile in projectiles){
         var rb = projectile.GetComponent<Rigidbody2D>();
         projectile.transform.localScale = Vector3.one * 2f;
+        projectile.GetComponent<BaseProjectile>().DeactivationDelay = 4f;
         rb.position = boss.eyesPosition;
         rb.rotation = Random.Range(75f, 255f);
         projectile.GetComponent<BehaviorManager>().Behavior = new ProjectileBehavior.Timing(3)
