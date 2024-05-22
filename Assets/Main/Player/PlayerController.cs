@@ -62,7 +62,6 @@ public class PlayerController : MonoBehaviour {
     }
 
     velocity = new Vector2(xOffset, yOffset).normalized * speed;
-    // Debug.Log($"{velocity.x} {velocity.y} {rigidBody.position.x} {rigidBody.position.y} {speed} {DefaultSpeed}");
   }
   void FixedUpdate(){
     if (NeedsReset){

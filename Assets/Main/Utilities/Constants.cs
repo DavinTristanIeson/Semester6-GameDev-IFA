@@ -19,6 +19,7 @@ namespace Constants {
   public sealed class Tags {
     public const string Hurtbox = "Hurtbox";
     public const string Player = "Player";
+    public const string Boss = "Boss";
   }
   public sealed class GameObjectNames {
     public const string ProjectileLibrary = "ProjectileLibrary";
