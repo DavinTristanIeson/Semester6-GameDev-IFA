@@ -188,7 +188,7 @@ class Boss1PatternFinal_Paranoia : BossPattern<Boss1> {
       var playerRb = boss.Player.GetComponent<Rigidbody2D>();
       rb.position = playerRb.position + (Calculate.Vector.WithAngle(rotation) * 1f);
       rb.rotation = 180 + Calculate.Vector.AngleTowards(rb.position, playerRb.position);
-      go.GetComponent<BehaviorManager>().Behavior = new ProjectileBehavior.Propulsion(2 - (int) Difficulty);
+      go.GetComponent<BehaviorManager>().Behavior = new ProjectileBehavior.Propulsion(3 - (int) Difficulty);
       rotation++;
     }
   }
@@ -215,6 +215,7 @@ class Boss1PatternFinal : BossPattern<Boss1> {
   }
 
   public override void Execute(Boss1 caller){
+    if (Time.time >= startTime + 60f) return;
     for (int i = 0; i < patterns.Length; i++){
       if (Time.time >= startTime + timing[i]){
         patterns[i].Execute(caller);

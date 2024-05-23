@@ -25,12 +25,7 @@ class Boss1Pattern8_BounceCrush : BossPattern<Boss1>{
 
   public void SpawnQuake(GameObject go){
     var center = go.GetComponent<Rigidbody2D>().position;
-    int count = Difficulty switch {
-      DifficultyMode.Casual => 6,
-      DifficultyMode.Normal => 8,
-      DifficultyMode.Challenge => 10,
-      _ => 8,
-    };
+    int count = 8 * ((int) Difficulty + 1);
     var projectiles = quakePool.GetMany(count);
     var startAngle = Random.Range(0f, 360f);
     for (int i = 0; i < count; i++){
@@ -38,18 +33,13 @@ class Boss1Pattern8_BounceCrush : BossPattern<Boss1>{
       var rb = projectiles[i].GetComponent<Rigidbody2D>();
       rb.rotation = angle;
       rb.position = center;
-      projectiles[i].GetComponent<BehaviorManager>().Behavior = new ProjectileBehavior.Propulsion(8f);
+      projectiles[i].GetComponent<BehaviorManager>().Behavior = new ProjectileBehavior.Propulsion(4f);
     }
     go.GetComponent<BehaviorManager>().GetBehaviorOfType<ProjectileBehavior.Timing>()?.Next(go);
   }
 
   public override void Start(Boss1 caller){
-    int count = Difficulty switch {
-      DifficultyMode.Casual => 4,
-      DifficultyMode.Normal => 6,
-      DifficultyMode.Challenge => 8,
-      _ => 8,
-    };
+    int count = 4 + 2 * (int) Difficulty;
     var projectiles = pool.GetMany(count);
     var boundary = BoundaryInformation.GetInstance();
     for (int i = 0; i < count; i++){

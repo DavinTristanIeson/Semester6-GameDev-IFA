@@ -25,8 +25,8 @@ class HealthManager : MonoBehaviour {
     get => originalHealth;
   }
 
-  public int HealthPercentage {
-    get => health / originalHealth;
+  public float HealthPercentage {
+    get => (float) health / (float) originalHealth;
   }
 
   public bool IsDead {

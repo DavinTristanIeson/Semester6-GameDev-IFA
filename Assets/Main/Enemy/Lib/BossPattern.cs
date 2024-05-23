@@ -78,8 +78,8 @@ public class BossPatternManager<T> where T : MonoBehaviour {
   }
 
   public void Destroy(T caller){
-    if (currentPattern != NO_PATTERN){
-      Pattern.Destroy(caller);
+    foreach (var pattern in patterns){
+      pattern.Destroy(caller);
     }
   }
 }
@@ -103,7 +103,6 @@ class BossPhaseManager<T> where T : MonoBehaviour {
     if (phase + 1 < phases.Length && phases[phase + 1].Health >= health){
       phases[phase].Pattern.Deactivate(caller);
       phase++;
-      phases[phase].Pattern.Destroy(caller);
     }
     phases[phase].Pattern.NextPattern(caller);
     phases[phase].Pattern.Execute(caller);
