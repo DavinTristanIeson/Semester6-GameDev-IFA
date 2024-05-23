@@ -85,8 +85,10 @@ public class BossPatternManager<T> where T : MonoBehaviour {
 }
 
 class BossPhase<T> where T : MonoBehaviour {
+  public ScriptableProcedure? Before;
   public BossPatternManager<T> Pattern { get; private set; }
   public int Health { get; private set; }
+  public float? Timeout;
   public BossPhase(BossPatternManager<T> pattern, int health){
     Pattern = pattern;
     Health = health;
@@ -95,14 +97,29 @@ class BossPhase<T> where T : MonoBehaviour {
 class BossPhaseManager<T> where T : MonoBehaviour {
   int phase = 0;
   BossPhase<T>[] phases;
+  float timeSinceLastPhase = 0.0f;
+  public ScriptableProcedure? OnEnd;
   public BossPhaseManager(BossPhase<T>[] phases){
     this.phases = phases.OrderBy((x) => -1 * x.Health).ToArray();
   }
 
   public void Execute(T caller, int health){
-    if (phase + 1 < phases.Length && phases[phase + 1].Health >= health){
+    if (phase >= phases.Length){
+      return;
+    }
+    bool isTimeout = phases[phase].Timeout is null || timeSinceLastPhase + phases[phase].Timeout <= Time.time;
+    bool fulfillsNextPhaseHealthCondition = (phase == phases.Length - 1) || (phase + 1 < phases.Length && phases[phase + 1].Health >= health);
+    if (isTimeout && fulfillsNextPhaseHealthCondition){
       phases[phase].Pattern.Deactivate(caller);
       phase++;
+      timeSinceLastPhase = Time.time;
+      if (phase >= phases.Length && OnEnd is ScriptableProcedure onEnd){
+        onEnd();
+        return;
+      }
+      if (phases[phase].Before is ScriptableProcedure before){
+        before();
+      }
     }
     phases[phase].Pattern.NextPattern(caller);
     phases[phase].Pattern.Execute(caller);

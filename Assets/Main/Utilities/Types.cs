@@ -2,6 +2,7 @@ using UnityEngine;
 
 #nullable enable
 public delegate void ScriptableAction<T>(T caller);
+public delegate void ScriptableProcedure();
 public interface ScriptableBehavior<T> {
   public void Start(T caller){}
   public void Execute(T caller){}

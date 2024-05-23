@@ -245,7 +245,7 @@ class Boss1PatternFinal : BossPattern<Boss1> {
       new Boss1PatternFinal_Paranoia(boss)
     };
     timing = new [] {
-      0f,
+      5f,
       15f,
       30f,
       40f,

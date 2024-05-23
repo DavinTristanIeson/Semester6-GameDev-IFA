@@ -5013,7 +5013,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 2100000, guid: 7f89f9ba0e30c8e4d8730cb57d5cbc11, type: 2}
-  LastHealth: 0
 --- !u!1001 &538507490
 PrefabInstance:
   m_ObjectHideFlags: 0

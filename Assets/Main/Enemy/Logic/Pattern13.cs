@@ -61,6 +61,7 @@ class Boss1Pattern13_AirPunch : BossPattern<Boss1>{
       float xOffset = (Random.Range(0, 2) == 0 ? -1 : 1) * Random.Range(2f, 3f);
       float yOffset = (Random.Range(0, 2) == 0 ? -1 : 1) * Random.Range(2f, 3f);
       go.GetComponent<Rigidbody2D>().position = playerPos + new Vector2(xOffset, yOffset);
+      go.GetComponent<BaseProjectile>().DeactivationDelay = 4f;
       go.GetComponent<BehaviorManager>().Behavior = new ProjectileBehavior.Timing(3)
         .Then(new ProjectileBehavior.Merge(3)
           .With(new ProjectileBehavior.Acceleration(360f, -2f, 0f) {
