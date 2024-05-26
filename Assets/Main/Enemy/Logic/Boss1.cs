@@ -53,7 +53,7 @@ public class Boss1 : MonoBehaviour {
     player.GetComponentInChildren<GunController>().gameObject.SetActive(true);
     health.Reset();
     healthBar.SetMaxHealth(health.OriginalHealth);
-    var sleepingPhase = new BossPatternManager<Boss1>(
+    var sleepingPhase = new BossPhase<Boss1>(new BossPatternManager<Boss1>(
       new BossPattern<Boss1>[] {
         new Boss1Pattern2_SineWave(this),
         new Boss1Pattern3_Missile(this),
@@ -63,8 +63,8 @@ public class Boss1 : MonoBehaviour {
       },
       difficultyMode,
       20f
-    );
-    var violentPhase = new BossPatternManager<Boss1>(
+    ), health.HealthWhen(1f));
+    var violentPhase = new BossPhase<Boss1>(new BossPatternManager<Boss1>(
       new BossPattern<Boss1>[] {
         new Boss1Pattern7_Punch(this),
         new Boss1Pattern8_BounceCrush(this),
@@ -74,8 +74,8 @@ public class Boss1 : MonoBehaviour {
       },
       difficultyMode,
       20f
-    );
-    var breakdownPhase = new BossPatternManager<Boss1>(
+    ), health.HealthWhen(0.6666f));
+    var breakdownPhase = new BossPhase<Boss1>(new BossPatternManager<Boss1>(
       new BossPattern<Boss1>[] {
           new Boss1Pattern1_BOWAP(this),
           new Boss1Pattern5_Tunnel(this),
@@ -85,23 +85,29 @@ public class Boss1 : MonoBehaviour {
       },
       difficultyMode,
       20f
-    );
-    var finalPhase = new BossPatternManager<Boss1>(
-      new BossPattern<Boss1>[] {
-        new Boss1PatternFinal(this),
-      },
-      difficultyMode,
-      60f
-    );
-    phases = new BossPhaseManager<Boss1>(new BossPhase<Boss1>[] {
-      new BossPhase<Boss1>(sleepingPhase, health.HealthWhen(1)),
-      new BossPhase<Boss1>(violentPhase, health.HealthWhen(0.6666f)),
-      new BossPhase<Boss1>(breakdownPhase, health.HealthWhen(0.3333f)),
-      new BossPhase<Boss1>(finalPhase, 0) {
-        Before = OnSetFinalPhase,
-        Timeout = 60f,
-      }
-    }) {
+    ), health.HealthWhen(0.3333f));
+    
+    BossPhase<Boss1> finalPhase = new BossPhase<Boss1>(new BossPatternManager<Boss1>(
+        new BossPattern<Boss1>[] {
+          new Boss1PatternFinal(this),
+        },
+        difficultyMode,
+        60f
+      ), 0) {
+      Before = OnSetFinalPhase,
+      Timeout = 60f
+    };
+    if (difficultyMode == DifficultyMode.Casual){
+      finalPhase.Timeout = 0.2f;
+      finalPhase.Before = null;
+    }
+    BossPhase<Boss1>[] phaseArray = new BossPhase<Boss1>[] {
+      sleepingPhase,
+      violentPhase,
+      breakdownPhase,
+      finalPhase
+    };
+    phases = new BossPhaseManager<Boss1>(phaseArray) {
       OnEnd = EndGame
     };
     finalPhaseStartTime = float.MaxValue;
