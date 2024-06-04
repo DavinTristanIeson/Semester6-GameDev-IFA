@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 
+[RequireComponent(typeof (GameoverObserver))]
 public class PlayerHurtbox : MonoBehaviour {
   HealthManager health;
   PlayerController controller;
@@ -45,6 +46,10 @@ public class PlayerHurtbox : MonoBehaviour {
         healthBar.SetHealth(health.Health);
         cameraEffects.TriggerHealth(health.HealthPercentage);
       }
+    }
+
+    if (health.Health == 0){
+      GetComponent<GameoverObserver>().GameOver();
     }
   }
 }

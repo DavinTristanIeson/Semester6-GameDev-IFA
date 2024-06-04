@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof (Rigidbody2D))]
 [RequireComponent(typeof (HealthManager))]
+[RequireComponent(typeof (GameoverObserver))]
 public class Boss1 : MonoBehaviour {
   public DifficultyMode difficultyMode = DifficultyMode.Normal;
 
@@ -122,6 +123,7 @@ public class Boss1 : MonoBehaviour {
 
   void EndGame(){
     Debug.Log("Game end");
+    GetComponent<GameoverObserver>().GameOver();
   }
 
   void Update(){
@@ -136,18 +138,7 @@ public class Boss1 : MonoBehaviour {
       if (health.Damage(1)){
         Debug.Log($"Boss HP: {health.Health}");
         healthBar.SetHealth(health.Health);
-
-        if (health.Health == 0){
-          GameOver();
-        }
-
       }
     }
-  }
-
-  private void GameOver(){
-    Debug.Log("GameOver !");
-
-    SceneManager.LoadScene("GameOver. Boss Defeated !");
   }
 }

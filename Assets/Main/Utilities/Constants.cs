@@ -24,5 +24,6 @@ namespace Constants {
   public sealed class GameObjectNames {
     public const string ProjectileLibrary = "ProjectileLibrary";
     public const string Camera = "Main Camera";
+    public const string PauseMenu = "PauseMenu";
   }
 }

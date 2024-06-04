@@ -63,7 +63,7 @@ Material:
     m_Floats:
     - Inversion: 0
     - VignetteRadius: 1
-    - VignetteSoftness: 0
+    - VignetteSoftness: 1.2
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
