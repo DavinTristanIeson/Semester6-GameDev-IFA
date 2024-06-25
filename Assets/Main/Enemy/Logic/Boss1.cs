@@ -1,4 +1,5 @@
 using System;
+using Constants;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -40,7 +41,12 @@ public class Boss1 : MonoBehaviour {
     playerHealth.Reset();
     playerHealthbar.SetMaxHealth(playerHealth.Health);
 
-    GameObject.Find(Constants.GameObjectNames.Camera).GetComponent<PlayerStateBasedCameraEffects>().StartFinalPhaseSequence();
+    GameObject.Find(GameObjectNames.BackgroundMusicManager)
+      .GetComponent<BackgroundMusicManager>()
+      .PlayAudio(MusicAssetNames.FinalPhase, false);
+    GameObject.Find(GameObjectNames.Camera)
+      .GetComponent<PlayerStateBasedCameraEffects>()
+      .StartFinalPhaseSequence();
   }
 
   void OnEnable(){
@@ -68,7 +74,7 @@ public class Boss1 : MonoBehaviour {
     ), health.HealthWhen(1f));
     var violentPhase = new BossPhase<Boss1>(new BossPatternManager<Boss1>(
       new BossPattern<Boss1>[] {
-        new Boss1Pattern7_Punch(this),
+        // new Boss1Pattern7_Punch(this),
         new Boss1Pattern8_BounceCrush(this),
         new Boss1Pattern11_BigFist(this),
         new Boss1Pattern12_Meteors(this),

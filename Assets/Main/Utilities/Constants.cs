@@ -25,5 +25,11 @@ namespace Constants {
     public const string ProjectileLibrary = "ProjectileLibrary";
     public const string Camera = "Main Camera";
     public const string PauseMenu = "PauseMenu";
+    public const string BackgroundMusicManager = "BackgroundMusicManager";
+  }
+  public sealed class MusicAssetNames {
+    public const string Battle = "Battle";
+    public const string GameOver = "GameOver";
+    public const string FinalPhase = "FinalPhase";
   }
 }
