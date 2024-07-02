@@ -16,6 +16,7 @@ public class Boss1 : MonoBehaviour {
   private Rigidbody2D rigidBody;
   private GameObject player;
   public HealthBar healthBar;
+  private Boss1Animator animator;
 
 
   public GameObject Player {
@@ -47,6 +48,7 @@ public class Boss1 : MonoBehaviour {
     GameObject.Find(GameObjectNames.Camera)
       .GetComponent<PlayerStateBasedCameraEffects>()
       .StartFinalPhaseSequence();
+    animator.TriggerPhase(Boss1Animator.LastPhase);
   }
 
   void OnEnable(){
@@ -61,6 +63,7 @@ public class Boss1 : MonoBehaviour {
     player.GetComponentInChildren<GunController>().gameObject.SetActive(true);
     health.Reset();
     healthBar.SetMaxHealth(health.OriginalHealth);
+    animator = GetComponentInChildren<Boss1Animator>();
     var sleepingPhase = new BossPhase<Boss1>(new BossPatternManager<Boss1>(
       new BossPattern<Boss1>[] {
         new Boss1Pattern2_SineWave(this),
@@ -71,7 +74,11 @@ public class Boss1 : MonoBehaviour {
       },
       difficultyMode,
       20f
-    ), health.HealthWhen(1f));
+    ), health.HealthWhen(1f)) {
+      Before = () => {
+        animator.TriggerPhase(0);
+      }
+    };
     var violentPhase = new BossPhase<Boss1>(new BossPatternManager<Boss1>(
       new BossPattern<Boss1>[] {
         // new Boss1Pattern7_Punch(this),
@@ -82,7 +89,11 @@ public class Boss1 : MonoBehaviour {
       },
       difficultyMode,
       20f
-    ), health.HealthWhen(0.6666f));
+    ), health.HealthWhen(0.6666f)) {
+      Before = () => {
+        animator.TriggerPhase(1);
+      }
+    };
     var breakdownPhase = new BossPhase<Boss1>(new BossPatternManager<Boss1>(
       new BossPattern<Boss1>[] {
           new Boss1Pattern1_BOWAP(this),
@@ -93,7 +104,11 @@ public class Boss1 : MonoBehaviour {
       },
       difficultyMode,
       20f
-    ), health.HealthWhen(0.3333f));
+    ), health.HealthWhen(0.3333f)) {
+      Before = () => {
+        animator.TriggerPhase(2);
+      }
+    };
     
     BossPhase<Boss1> finalPhase = new BossPhase<Boss1>(new BossPatternManager<Boss1>(
         new BossPattern<Boss1>[] {

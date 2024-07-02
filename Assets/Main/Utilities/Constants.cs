@@ -26,10 +26,28 @@ namespace Constants {
     public const string Camera = "Main Camera";
     public const string PauseMenu = "PauseMenu";
     public const string BackgroundMusicManager = "BackgroundMusicManager";
+    public const string Hurtbox = "Hurtbox";
   }
   public sealed class MusicAssetNames {
     public const string Battle = "Battle";
     public const string GameOver = "GameOver";
     public const string FinalPhase = "FinalPhase";
+  }
+  namespace AnimationStates {
+    public sealed class Player {
+      public const string Run = "Run";
+      public const string Idle = "Idle";
+      public const string Angry = "Angry";
+      // Parameter
+
+      public const string ParamFloatSprint = "Sprint";
+    }
+    public sealed class Boss {
+      public const string WakeToSleep = "Wake To Sleep";
+      public const string Sleep = "Sleep";
+      public const string Idle = "Idle";
+      public const string SleepToAngry = "Sleep To Angry";
+      public const string Cry = "Cry";
+    }
   }
 }
