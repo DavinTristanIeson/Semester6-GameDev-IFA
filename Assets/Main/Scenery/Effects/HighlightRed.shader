@@ -14,6 +14,7 @@ Shader "Custom/FinalPhase" {
 
       // Properties
       sampler2D _MainTex;
+      float Inversion;
 
       float4 frag(v2f_img input) : COLOR {
         // sample texture for color
@@ -27,7 +28,8 @@ Shader "Custom/FinalPhase" {
         // return float4(exceedRThreshold, exceedRThreshold, exceedRThreshold, 1.0);
 
         int enable = round(maxDiff);
-        return base * enable + float4(gray, gray, gray, base.a) * (1 - enable);
+        float4 outputColor = base * enable + float4(gray, gray, gray, base.a) * (1 - enable);
+        return max(outputColor - (Inversion / 2), (Inversion / 2) - outputColor);
       }
       ENDCG
 }}}

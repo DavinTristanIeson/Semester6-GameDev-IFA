@@ -18,12 +18,12 @@ public class PlayerStateBasedCameraEffects : MonoBehaviour {
   void Update(){
     if (inversion > 0.0f){
       inversion = Mathf.Max(0.0f, inversion - 0.04f);
-      DefaultMaterial.SetFloat("Inversion", inversion);
+      material.SetFloat("Inversion", inversion);
     }
   }
 
   void OnEnable(){
-    DefaultMaterial.SetFloat("Inversion", 0);
+    material.SetFloat("Inversion", 0);
     material = DefaultMaterial;
   }
 
