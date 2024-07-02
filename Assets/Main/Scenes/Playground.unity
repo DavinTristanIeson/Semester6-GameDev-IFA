@@ -4982,7 +4982,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8689333364301745191, guid: d5aeab9628ac6e840961242639f578a3, type: 3}
       propertyPath: originalHealth
-      value: 600
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5100,7 +5100,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 023484af38e70f5429625c8ba2eccb91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material: {fileID: 2100000, guid: 7f89f9ba0e30c8e4d8730cb57d5cbc11, type: 2}
+  DefaultMaterial: {fileID: 2100000, guid: 7f89f9ba0e30c8e4d8730cb57d5cbc11, type: 2}
+  FinalPhaseMaterial: {fileID: 2100000, guid: 1ca4057f5ff9ede48ad9f9adc969390b, type: 2}
 --- !u!1001 &538507490
 PrefabInstance:
   m_ObjectHideFlags: 0
