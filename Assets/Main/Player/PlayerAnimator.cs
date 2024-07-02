@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerAnimator : MonoBehaviour {
   Vector2 lastPosition;
   Animator animator;
+  CooldownTimer animationCooldown;
   HealthManager health;
   int lastAcknowledgedHealth;
   
@@ -17,6 +18,7 @@ public class PlayerAnimator : MonoBehaviour {
     animator = GetComponent<Animator>();
     health = GetComponentInParent<HealthManager>();
     lastAcknowledgedHealth = health.Health;
+    animationCooldown = new CooldownTimer(0.1f);
     GameObject.Find(GameObjectNames.Hurtbox);
   }
 
@@ -30,11 +32,16 @@ public class PlayerAnimator : MonoBehaviour {
       lastPosition = transform.position;
       return;
     }
+    if (animationCooldown.InCooldown) return;
+
     var diff = (currentPosition - lastPosition).magnitude;
     if (diff > 0){
       animator.Play(Constants.AnimationStates.Player.Run);
-      animator.SetFloat(Constants.AnimationStates.Player.ParamFloatSprint, Mathf.Clamp(diff / 0.25f, 0f, 1f));
+      animator.SetFloat(Constants.AnimationStates.Player.ParamFloatSprint, Mathf.Clamp(diff / 0.4f, 0f, 1f));
+    } else {
+      animator.Play(Constants.AnimationStates.Player.Idle);
     }
+    animationCooldown.Try();
     lastPosition = transform.position;
   }
 }
