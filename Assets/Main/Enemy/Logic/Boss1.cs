@@ -43,7 +43,7 @@ public class Boss1 : MonoBehaviour {
     playerHealthbar.SetMaxHealth(playerHealth.Health);
 
     GameObject.Find(GameObjectNames.BackgroundMusicManager)
-      .GetComponent<BackgroundMusicManager>()
+      .GetComponent<AudioClipManager>()
       .PlayAudio(MusicAssetNames.FinalPhase, false);
     GameObject.Find(GameObjectNames.Camera)
       .GetComponent<PlayerStateBasedCameraEffects>()
@@ -144,7 +144,7 @@ public class Boss1 : MonoBehaviour {
 
   void EndGame(){
     Debug.Log("Game end");
-    GetComponent<GameoverObserver>().GameOver();
+    GetComponent<GameoverObserver>().GameOver(true);
   }
 
   void Update(){

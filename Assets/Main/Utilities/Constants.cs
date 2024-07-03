@@ -26,12 +26,16 @@ namespace Constants {
     public const string Camera = "Main Camera";
     public const string PauseMenu = "PauseMenu";
     public const string BackgroundMusicManager = "BackgroundMusicManager";
+    public const string SfxManager = "SfxManager";
     public const string Hurtbox = "Hurtbox";
   }
   public sealed class MusicAssetNames {
     public const string Battle = "Battle";
     public const string GameOver = "GameOver";
     public const string FinalPhase = "FinalPhase";
+    // Sfx
+    public const string HealthPickup = "HealthPickup";
+    public const string HealthDamage = "HealthDamage";
   }
   namespace AnimationStates {
     public sealed class Player {

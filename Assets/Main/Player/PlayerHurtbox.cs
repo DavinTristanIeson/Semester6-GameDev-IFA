@@ -9,6 +9,8 @@ public class PlayerHurtbox : MonoBehaviour {
   public HealthBar RecoveryBar;
   GameObject boss;
   PlayerStateBasedCameraEffects cameraEffects;
+  AudioClipManager sfxManager;
+  GameoverObserver gameover;
 
   private float gauge = 0.0f;
   void OnEnable(){
@@ -20,18 +22,21 @@ public class PlayerHurtbox : MonoBehaviour {
     RecoveryBar.SetMaxHealth(1000f);
     RecoveryBar.SetHealth(0f);
     cameraEffects = GameObject.Find(Constants.GameObjectNames.Camera).GetComponent<PlayerStateBasedCameraEffects>();
+    sfxManager = GameObject.Find(Constants.GameObjectNames.SfxManager).GetComponent<AudioClipManager>();
+    gameover = GetComponent<GameoverObserver>();
   }
 
   void Update(){
     Vector2 position = transform.position;
     var distance = (position - boss.GetComponent<Rigidbody2D>().position).magnitude;
 
-    gauge = Mathf.Min(RecoveryBar.slider.maxValue, gauge + 2f / distance);
+    gauge = Mathf.Min(RecoveryBar.slider.maxValue, gauge + (2f / distance) * Time.timeScale);
     if (gauge >= RecoveryBar.slider.maxValue && health.Health < health.OriginalHealth){
       // Heal
       health.Health = Math.Clamp(health.Health + 1, 0, health.OriginalHealth);
       healthBar.SetHealth(health.Health);
       cameraEffects.TriggerHealth(health.HealthPercentage);
+      sfxManager.PlayAudio(Constants.MusicAssetNames.HealthPickup, false);
       gauge = 0f;
     }
     RecoveryBar.SetHealth(gauge);
@@ -45,11 +50,12 @@ public class PlayerHurtbox : MonoBehaviour {
         controller.NeedsReset = true;
         healthBar.SetHealth(health.Health);
         cameraEffects.TriggerHealth(health.HealthPercentage);
+        sfxManager.PlayAudio(Constants.MusicAssetNames.HealthDamage, false);
       }
     }
 
     if (health.Health == 0){
-      GetComponent<GameoverObserver>().GameOver();
+      gameover.GameOver(false);
     }
   }
 }

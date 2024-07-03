@@ -23,7 +23,9 @@ public class PlayerStateBasedCameraEffects : MonoBehaviour {
   }
 
   void OnEnable(){
+    material = DefaultMaterial;
     material.SetFloat("Inversion", 0);
+    material.SetFloat("Vignette Softness", 0);
     material = DefaultMaterial;
   }
 

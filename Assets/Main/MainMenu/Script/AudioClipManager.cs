@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BackgroundMusicManager : MonoBehaviour {
+public class AudioClipManager : MonoBehaviour {
     [SerializeField]
     private AudioClip[] audioClips = {};
     [SerializeField]
@@ -11,10 +11,12 @@ public class BackgroundMusicManager : MonoBehaviour {
     {
         AudioSource = gameObject.AddComponent<AudioSource>();
         AudioSource.loop = true;
-        PlayAudio(audioClips[defaultClip].name);
+        if (defaultClip >= 0){
+            PlayAudio(audioClips[defaultClip].name, true);
+        }
     }
 
-    public void PlayAudio(string clipName, bool loop = true)
+    public void PlayAudio(string clipName, bool loop)
     {
         AudioClip clip = GetAudioClipByName(clipName);
         if (clip != null)

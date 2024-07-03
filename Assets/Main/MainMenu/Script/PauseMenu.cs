@@ -1,4 +1,5 @@
 using Constants;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -14,14 +15,16 @@ public class PauseMenu : MonoBehaviour {
   Button restartButton;
   Button homeButton;
   Button resumeButton;
-  BackgroundMusicManager bgmManager;
+  TMP_Text text;
+  AudioClipManager bgmManager;
 
   public void OnEnable(){
     var layout = transform.Find("Layout");
     restartButton = layout.transform.Find("Restart").GetComponent<Button>();
     homeButton = layout.transform.Find("Home").GetComponent<Button>();
     resumeButton = layout.transform.Find("Resume").GetComponent<Button>();
-    bgmManager = GameObject.Find(GameObjectNames.BackgroundMusicManager).GetComponent<BackgroundMusicManager>();
+    text = GetComponentInChildren<TMP_Text>();
+    bgmManager = GameObject.Find(GameObjectNames.BackgroundMusicManager).GetComponent<AudioClipManager>();
     restartButton.interactable = true;
     homeButton.interactable = true;
     resumeButton.interactable = true;
@@ -46,6 +49,10 @@ public class PauseMenu : MonoBehaviour {
   public void Restart(){
     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     Time.timeScale=1;
+  }
+
+  public void SetText(string newText){
+    text.text = newText;
   }
 
   public void Unallow(PauseMenuOption option){
