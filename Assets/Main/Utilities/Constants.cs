@@ -36,6 +36,7 @@ namespace Constants {
     // Sfx
     public const string HealthPickup = "HealthPickup";
     public const string HealthDamage = "HealthDamage";
+    public const string Gun = "Gun";
   }
   namespace AnimationStates {
     public sealed class Player {

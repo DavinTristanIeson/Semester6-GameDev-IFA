@@ -17,7 +17,7 @@ public class PlayerAnimator : MonoBehaviour {
     lastPosition = currentPosition;
     animator = GetComponent<Animator>();
     health = GetComponentInParent<HealthManager>();
-    lastAcknowledgedHealth = health.Health;
+    lastAcknowledgedHealth = health.OriginalHealth;
     animationCooldown = new CooldownTimer(0.1f);
     GameObject.Find(GameObjectNames.Hurtbox);
   }
@@ -27,7 +27,7 @@ public class PlayerAnimator : MonoBehaviour {
       animator.Play(Constants.AnimationStates.Player.Angry);
       lastAcknowledgedHealth = health.Health;
     }
-
+    
     if (animator.GetCurrentAnimatorStateInfo(0).IsName(Constants.AnimationStates.Player.Angry)){
       lastPosition = transform.position;
       return;
@@ -41,6 +41,8 @@ public class PlayerAnimator : MonoBehaviour {
     } else {
       animator.Play(Constants.AnimationStates.Player.Idle);
     }
+
+    animationCooldown.WaitTime = 0.1f;
     animationCooldown.Try();
     lastPosition = transform.position;
   }

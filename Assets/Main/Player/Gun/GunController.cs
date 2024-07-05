@@ -3,17 +3,13 @@ using UnityEngine;
 [RequireComponent(typeof(GameObjectPoolManager))]
 public class GunController : MonoBehaviour {
   private GameObjectPoolManager projectileManager;
-
-  void ResetProjectile(GameObject projectile){
-    Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
-    rb.position = new Vector3(transform.position.x, transform.position.y, Constants.ZAxis.Bullet);
-    rb.rotation = transform.rotation.eulerAngles.z;
-  }
+  private AudioClipManager sfxManager;
 
   void OnEnable(){
-    if (projectileManager == null){
-      projectileManager = GetComponent<GameObjectPoolManager>();
-    }
+    projectileManager = GetComponent<GameObjectPoolManager>();
+    sfxManager = GetComponentInChildren<AudioClipManager>();
+
+    sfxManager.AudioSource.volume = 0.25f;
   }
 
   void TrackCursor(){
@@ -36,7 +32,15 @@ public class GunController : MonoBehaviour {
 
   void Update(){
     if (projectileManager.Try()){
-      ResetProjectile(projectileManager.Get());
+      var projectile = projectileManager.Get();
+      var rb = projectile.GetComponent<Rigidbody2D>();
+      rb.position = new Vector3(transform.position.x, transform.position.y, Constants.ZAxis.Bullet);
+      rb.rotation = transform.rotation.eulerAngles.z;
+    }
+    if (Time.timeScale == 0 && sfxManager.AudioSource.volume != 0.0f){
+      sfxManager.AudioSource.Pause();
+    } else if (Time.timeScale != 0 && sfxManager.AudioSource.volume == 0.0f) {
+      sfxManager.AudioSource.UnPause();
     }
   }
 }

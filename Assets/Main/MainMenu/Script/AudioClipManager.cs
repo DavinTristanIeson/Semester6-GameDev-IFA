@@ -7,7 +7,7 @@ public class AudioClipManager : MonoBehaviour {
     private int defaultClip = 0;
     public AudioSource AudioSource { get; private set; }
 
-    void Start()
+    void Awake()
     {
         AudioSource = gameObject.AddComponent<AudioSource>();
         AudioSource.loop = true;

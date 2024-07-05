@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Angry
+  m_Name: Gun
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,11 +21,13 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: 21300000, guid: 69cdc6e096a261a42bfb93a00c079efd, type: 3}
+      value: {fileID: 21300000, guid: 41c6027f76ccfb84d9e2c24d9efb7106, type: 3}
     - time: 0.083333336
-      value: {fileID: 21300000, guid: e579e7db2038c154ea93024079ccb49d, type: 3}
+      value: {fileID: 21300000, guid: 3ef718989690f044091e197cb51d73a2, type: 3}
     - time: 0.16666667
-      value: {fileID: 21300000, guid: f46b75879d5989542a49e39dd26178fd, type: 3}
+      value: {fileID: 21300000, guid: 8f4c6d259641071408c56d14b056926d, type: 3}
+    - time: 0.25
+      value: {fileID: 21300000, guid: 6778bfc64781ada44930d8df4521f676, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -48,15 +50,16 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: 21300000, guid: 69cdc6e096a261a42bfb93a00c079efd, type: 3}
-    - {fileID: 21300000, guid: e579e7db2038c154ea93024079ccb49d, type: 3}
-    - {fileID: 21300000, guid: f46b75879d5989542a49e39dd26178fd, type: 3}
+    - {fileID: 21300000, guid: 41c6027f76ccfb84d9e2c24d9efb7106, type: 3}
+    - {fileID: 21300000, guid: 3ef718989690f044091e197cb51d73a2, type: 3}
+    - {fileID: 21300000, guid: 8f4c6d259641071408c56d14b056926d, type: 3}
+    - {fileID: 21300000, guid: 6778bfc64781ada44930d8df4521f676, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.25
+    m_StopTime: 0.33333334
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
