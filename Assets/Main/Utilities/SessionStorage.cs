@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 #nullable enable
 class SessionStorage {
@@ -13,7 +14,11 @@ class SessionStorage {
     storage = new Dictionary<Keys, object>();
   }
   public void Set(Keys key, object o){
-    storage.Add(key, o);
+    if (storage.ContainsKey(key)){
+      storage[key] = o;
+    } else {
+      storage.Add(key, o);
+    }
   }
   public void Remove(Keys key){
     storage.Remove(key);

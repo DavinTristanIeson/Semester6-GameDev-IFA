@@ -8,8 +8,6 @@ public class GunController : MonoBehaviour {
   void OnEnable(){
     projectileManager = GetComponent<GameObjectPoolManager>();
     sfxManager = GetComponentInChildren<AudioClipManager>();
-
-    sfxManager.AudioSource.volume = 0.25f;
   }
 
   void TrackCursor(){

@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Main/MainMenu/GameOver.unity
     guid: 2978d522996c5c24e943bbf7a11d1c7e
+  - enabled: 1
+    path: Assets/Main/Scenes/CutsceneBefore.unity
+    guid: a76c67ee1f0e1994a95a1206885212cb
   m_configObjects: {}

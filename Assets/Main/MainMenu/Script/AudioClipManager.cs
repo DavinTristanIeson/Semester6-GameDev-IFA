@@ -1,6 +1,7 @@
 using UnityEngine;
 
 public class AudioClipManager : MonoBehaviour {
+    public float Volume = 1f;
     [SerializeField]
     private AudioClip[] audioClips = {};
     [SerializeField]
@@ -11,6 +12,7 @@ public class AudioClipManager : MonoBehaviour {
     {
         AudioSource = gameObject.AddComponent<AudioSource>();
         AudioSource.loop = true;
+        AudioSource.volume = Volume;
         if (defaultClip >= 0){
             PlayAudio(audioClips[defaultClip].name, true);
         }
